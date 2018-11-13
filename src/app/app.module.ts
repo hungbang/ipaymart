@@ -1,12 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
-import {CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 
-import { AppComponent } from './app.component';
-import {ButtonsModule, CardsFreeModule, MDBBootstrapModule, WavesModule} from 'angular-bootstrap-md';
+import {AppComponent} from './app.component';
 import {ROUTING} from './app.routing';
-import { NavigationBarComponent } from './navigation-bar/components/navigation-bar.component';
-import {SharedModule} from './shared/shared.module';
 
+import {NavigationBarComponent} from './navigation-bar/components/navigation-bar.component';
+
+import {SharedModule} from 'shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -16,15 +16,10 @@ import {SharedModule} from './shared/shared.module';
   imports: [
     BrowserModule,
     SharedModule,
-    ButtonsModule.forRoot(),
-    WavesModule.forRoot(),
-    CardsFreeModule.forRoot(),
-    MDBBootstrapModule.forRoot(),
     ROUTING,
   ],
   providers: [],
   bootstrap: [AppComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
-
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }

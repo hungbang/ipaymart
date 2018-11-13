@@ -1,5 +1,5 @@
 import {ModuleWithProviders, NgModule} from '@angular/core';
-import {CardsFreeModule, MdbCardBodyComponent, MdbCardComponent, MdbCardImageComponent} from 'angular-bootstrap-md';
+import {ButtonsModule, CardsFreeModule, MDBBootstrapModule} from 'angular-bootstrap-md';
 
 
 /**
@@ -11,6 +11,9 @@ import {CardsFreeModule, MdbCardBodyComponent, MdbCardComponent, MdbCardImageCom
 
 @NgModule({
   imports: [
+    ButtonsModule.forRoot(),
+    CardsFreeModule.forRoot(),
+    MDBBootstrapModule.forRoot(),
   ],
   declarations: [
     // Components
@@ -21,6 +24,9 @@ import {CardsFreeModule, MdbCardBodyComponent, MdbCardComponent, MdbCardImageCom
   ],
   exports: [
     // Modules
+    MDBBootstrapModule,
+    ButtonsModule,
+    CardsFreeModule
     // Components
 
     // Directives
