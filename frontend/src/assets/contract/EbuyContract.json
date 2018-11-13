@@ -1,0 +1,512 @@
+[
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "",
+        "type": "address"
+      },
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "sellItems",
+    "outputs": [
+      {
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "",
+        "type": "address"
+      },
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "buyItems",
+    "outputs": [
+      {
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "itemIds",
+    "outputs": [
+      {
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "deliveryAddresses",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "hashId",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "name": "seller",
+        "type": "address"
+      }
+    ],
+    "name": "NewItemEvent",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "hashId",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "name": "seller",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "buyer",
+        "type": "address"
+      }
+    ],
+    "name": "NewOrderEvent",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "hashId",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "name": "seller",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "buyer",
+        "type": "address"
+      }
+    ],
+    "name": "ReceivedItemEvent",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "hashId",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "name": "seller",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "name": "delivery",
+        "type": "address"
+      }
+    ],
+    "name": "ItemSentEvent",
+    "type": "event"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "ipfsId",
+        "type": "string"
+      }
+    ],
+    "name": "registerDelivery",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "_addr",
+        "type": "address"
+      }
+    ],
+    "name": "getDelivery",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      },
+      {
+        "name": "",
+        "type": "uint8"
+      },
+      {
+        "name": "ipfsId",
+        "type": "string"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "listDeliveries",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address[]"
+      },
+      {
+        "name": "",
+        "type": "uint8[]"
+      },
+      {
+        "name": "ipfsIds",
+        "type": "string"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_hashId",
+        "type": "string"
+      },
+      {
+        "name": "_price",
+        "type": "uint256"
+      }
+    ],
+    "name": "addItem",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_hashId",
+        "type": "string"
+      },
+      {
+        "name": "_receiverInfo",
+        "type": "string"
+      }
+    ],
+    "name": "orderItem",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": true,
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_hashId",
+        "type": "string"
+      },
+      {
+        "name": "_delivery",
+        "type": "address"
+      }
+    ],
+    "name": "sendItem",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_hashId",
+        "type": "string"
+      }
+    ],
+    "name": "deliverItem",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_hashId",
+        "type": "string"
+      }
+    ],
+    "name": "receiveItem",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_hashId",
+        "type": "string"
+      }
+    ],
+    "name": "cancelOrder",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "listItems",
+    "outputs": [
+      {
+        "name": "",
+        "type": "string"
+      },
+      {
+        "name": "",
+        "type": "uint256[]"
+      },
+      {
+        "name": "",
+        "type": "address[]"
+      },
+      {
+        "name": "",
+        "type": "address[]"
+      },
+      {
+        "name": "",
+        "type": "uint8[]"
+      },
+      {
+        "name": "",
+        "type": "uint48[]"
+      },
+      {
+        "name": "",
+        "type": "uint48[]"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "hashId",
+        "type": "string"
+      }
+    ],
+    "name": "getItem",
+    "outputs": [
+      {
+        "name": "",
+        "type": "string"
+      },
+      {
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "name": "",
+        "type": "address"
+      },
+      {
+        "name": "",
+        "type": "address"
+      },
+      {
+        "name": "",
+        "type": "uint8"
+      },
+      {
+        "name": "",
+        "type": "uint48"
+      },
+      {
+        "name": "",
+        "type": "uint48"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "_hashId",
+        "type": "string"
+      }
+    ],
+    "name": "getOrderDetails",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      },
+      {
+        "name": "",
+        "type": "address[]"
+      },
+      {
+        "name": "",
+        "type": "address[]"
+      },
+      {
+        "name": "",
+        "type": "string"
+      },
+      {
+        "name": "",
+        "type": "string"
+      },
+      {
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "_seller",
+        "type": "address"
+      }
+    ],
+    "name": "getItemsBySeller",
+    "outputs": [
+      {
+        "name": "itemIds",
+        "type": "string"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "name": "_buyer",
+        "type": "address"
+      }
+    ],
+    "name": "getItemsByBuyer",
+    "outputs": [
+      {
+        "name": "itemIds",
+        "type": "string"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

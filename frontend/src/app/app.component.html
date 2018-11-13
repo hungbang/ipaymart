@@ -1,0 +1,67 @@
+<html lang="en" class="full-height">
+
+<!--Main Navigation-->
+<header>
+
+  <mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark green">
+
+    <!-- Navbar brand -->
+    <mdb-navbar-brand><a class="navbar-brand" href="#">IPAYMartket</a></mdb-navbar-brand>
+
+    <!-- Collapsible content -->
+    <links>
+
+      <!-- Links -->
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a [routerLink]="['/home']" class="nav-link waves-light" mdbWavesEffect>Home<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a [routerLink]="['/items/new']" class="nav-link waves-light" mdbWavesEffect>Sell</a>
+        </li>
+        <li class="nav-item">
+          <a href="carrier" class="nav-link waves-light" mdbWavesEffect>Register Carrier</a>
+        </li>
+        <li class="nav-item">
+          <a href="profile" class="nav-link waves-light" mdbWavesEffect>My Profile</a>
+        </li>
+        <li class="nav-item">
+          <a href="about-us" class="nav-link waves-light" mdbWavesEffect>About Us</a>
+        </li>
+
+      </ul>
+      <!-- Links -->
+
+      <!-- Search form -->
+      <!--<form class="form-inline waves-light" mdbWavesEffect>-->
+        <!--<div class="md-form mt-0">-->
+          <!--<input class="form-control mr-sm-2" type="text" placeholder="Search">-->
+        <!--</div>-->
+      <!--</form>-->
+    </links>
+    <!-- Collapsible content -->
+
+  </mdb-navbar>
+  <ngx-spinner
+    bdColor="rgba(51,51,51,0.2)"
+    size="medium"
+    color="#2c3e50"
+    type="ball-spin-clockwise"
+  ></ngx-spinner>
+</header>
+<!--Main Navigation-->
+
+<!--Main Layout-->
+<main class="text-center py-5">
+
+  <!--<div class="container">-->
+    <!--<div class="row">-->
+      <!--<div class="col-md-12">-->
+
+        <router-outlet></router-outlet>
+
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+
+</main>
