@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, NgZone, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {FileUploader} from 'ng2-file-upload';
 import {Item} from '../../../shared/model/item';
@@ -6,7 +6,7 @@ import {IPFS} from '../../../ipfs';
 import {ContractService} from '../../../shared/services/contract.service';
 import {Web3Service} from '../../../shared/services/web3.service';
 import {NgxSpinnerService} from 'ngx-spinner';
-import {Observable, Subject, Subscription} from 'rxjs';
+import {Subject} from 'rxjs';
 
 @Component({
   selector: 'app-item',
@@ -22,7 +22,6 @@ export class ItemComponent implements OnInit {
   selectedAccount: any;
   contract: any;
   referenceHashId: any;
-  spinnerObservable: Subject;
   created = false;
   processing = false;
   itemForm = new FormGroup({
@@ -37,8 +36,8 @@ export class ItemComponent implements OnInit {
               private contractService: ContractService,
               private web3Service: Web3Service,
               private spinner: NgxSpinnerService,
-              private changeDetectorRef: ChangeDetectorRef) {
-    this.spinnerObservable = this.spinner.spinnerObservable;
+              private changeDetectorRef: ChangeDetectorRef,
+              private ngZone: NgZone) {
   }
 
   async ngOnInit() {
@@ -70,8 +69,7 @@ export class ItemComponent implements OnInit {
       }
       if (result) {
         if (this.referenceHashId === result.args.hashId) {
-          console.log('this=============', this.referenceHashId);
-          this.inserted();
+          alert('Success');
         }
       }
     });
@@ -99,7 +97,6 @@ export class ItemComponent implements OnInit {
     data.images = this.imageFiles;
     const filesAdded = await this.ipfs.files.add(new this.ipfs.types.Buffer(JSON.stringify(data)));
     this.referenceHashId = filesAdded[0].hash;
-    this.creating();
     this.changeDetectorRef.markForCheck();
     this.contractService.addItem(this.selectedAccount, filesAdded[0].hash, data.price);
 

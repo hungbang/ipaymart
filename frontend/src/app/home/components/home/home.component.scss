@@ -1,0 +1,9 @@
+@import '../../../../variables';
+
+
+ ::ng-deep .card-deck {
+   justify-content: center;
+  .card{
+    flex: 1 1 auto;
+  }
+}

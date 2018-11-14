@@ -6,6 +6,8 @@ import {ContractService} from './services/contract.service';
 import {Web3Service} from './services/web3.service';
 import {HttpClientModule} from '@angular/common/http';
 import {NgxSpinnerModule} from 'ngx-spinner';
+import {ScItemResolver} from './resolvers/ScItemResolver';
+import {IpfsRestClient} from './services/ipfs-rest-client';
 
 
 /**
@@ -54,8 +56,10 @@ import {NgxSpinnerModule} from 'ngx-spinner';
 
       ],
   providers: [
+    ScItemResolver,
     ContractService,
-    Web3Service
+    Web3Service,
+    IpfsRestClient
   ]
 })
 export class SharedModule {
