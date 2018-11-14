@@ -4,4 +4,5 @@ export class Item {
   category: string;
   price: number;
   images: any[];
+  hashId: any;
 }

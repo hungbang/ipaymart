@@ -1,12 +1,13 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, NgZone, OnInit} from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {FileUploader} from 'ng2-file-upload';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute, Params, Router} from '@angular/router';
+import {ItemDetailComponent} from '../item-detail/item-detail.component';
+import {IpfsRestClient} from '../../../shared/services/ipfs-rest-client';
 import {Item} from '../../../shared/model/item';
-import {IPFS} from '../../../ipfs';
-import {ContractService} from '../../../shared/services/contract.service';
-import {Web3Service} from '../../../shared/services/web3.service';
-import {NgxSpinnerService} from 'ngx-spinner';
-import {Subject} from 'rxjs';
+
+export enum ItemTab {
+  PROPERTIES = 'PROPERTIES',
+  DETAIL = 'DETAIL'
+}
 
 @Component({
   selector: 'app-item',
@@ -16,106 +17,33 @@ import {Subject} from 'rxjs';
 })
 export class ItemComponent implements OnInit {
 
-  // TODO: [HBQ] got an error : Cannot read property 'options' of undefined when remove this field. have no idea.
-  public uploader: FileUploader = new FileUploader({url: '', itemAlias: 'photo'});
-  imageFiles: any[] = [];
-  selectedAccount: any;
-  contract: any;
-  referenceHashId: any;
-  created = false;
-  processing = false;
-  itemForm = new FormGroup({
-    title: new FormControl('', Validators.required),
-    description: new FormControl(''),
-    price: new FormControl(''),
-    images: new FormControl(''),
-    category: new FormControl(''),
-  });
+  @ViewChild('itemDetail') itemDetail: ItemDetailComponent;
 
-  constructor(@Inject(IPFS) private ipfs,
-              private contractService: ContractService,
-              private web3Service: Web3Service,
-              private spinner: NgxSpinnerService,
-              private changeDetectorRef: ChangeDetectorRef,
-              private ngZone: NgZone) {
+  selectedTab = ItemTab.DETAIL;
+  itemTab = ItemTab;
+  resolveData: any;
+  item: Item;
+
+  constructor(private router: Router, private activatedRoute: ActivatedRoute,
+              private ipfsRestClient: IpfsRestClient, private changeDetectorRef: ChangeDetectorRef) {
+
   }
 
-  async ngOnInit() {
-    this.web3Service.getSelectedAccount().subscribe((account: any) => {
-      console.log('=======account=========', account);
-      this.selectedAccount = account;
-    });
-
-    // this.spinnerA = Observable.create(obs => this.obs = obs);
-    // this.spinnerA.subscribe(result => {
-    //   alert('aaa');
-    // })
-    const version = await this.ipfs.version();
-    console.log({version});
-
-    this.uploader.onAfterAddingFile = (file) => {
-      file.withCredentials = false;
-    };
-    this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-    };
-    this.contract = this.contractService.getContract();
-
-    // watch NewItemEvent
-    this.contract.NewItemEvent().watch((error: any, result: any) => {
-      if (error) {
-        this.changeDetectorRef.markForCheck();
-        alert('Cannot create your item.');
-
-      }
-      if (result) {
-        if (this.referenceHashId === result.args.hashId) {
-          alert('Success');
-        }
+  ngOnInit(): void {
+    this.activatedRoute.params.subscribe((params: Params) => {
+      if (params['id'] === 'new') {
+        this.selectedTab = ItemTab.PROPERTIES;
+      } else {
+        this.resolveData = this.activatedRoute.snapshot.data;
+        console.log(this.resolveData);
+        this.reloadItem();
       }
     });
   }
 
 
-  handleSelectedFiles(files: File[]): void {
-    if (files) {
-      for (const file of Object.values(files)) {
-        console.log(file);
-        const fileReader = new FileReader();
-        fileReader.onload = () => {
-          console.log(fileReader.result);
-          this.imageFiles.push(fileReader.result);
-          this.changeDetectorRef.markForCheck();
-        };
-        fileReader.readAsDataURL(file);
-      }
-
-    }
-  }
-
-  public async createItem() {
-    const data: Item = this.itemForm.getRawValue();
-    data.images = this.imageFiles;
-    const filesAdded = await this.ipfs.files.add(new this.ipfs.types.Buffer(JSON.stringify(data)));
-    this.referenceHashId = filesAdded[0].hash;
-    this.changeDetectorRef.markForCheck();
-    this.contractService.addItem(this.selectedAccount, filesAdded[0].hash, data.price);
-
-  }
-
-  resetItemForm() {
-    this.itemForm.reset();
-    this.imageFiles = [];
-  }
-
-  private creating() {
-    this.processing = true;
-    this.created = false;
-  }
-
-  private inserted() {
-    this.processing = false;
-    this.created = true;
-    this.itemForm.reset();
-    this.changeDetectorRef.markForCheck();
+  private reloadItem() {
+    console.log(this.resolveData);
+    this.item = this.resolveData.itemData;
   }
 }

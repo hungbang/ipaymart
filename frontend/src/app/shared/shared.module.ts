@@ -1,5 +1,5 @@
 import {ModuleWithProviders, NgModule} from '@angular/core';
-import {ButtonsModule, CardsFreeModule, InputsModule, WavesModule} from 'angular-bootstrap-md';
+import {ButtonsModule, CardsFreeModule, CarouselModule, InputsModule, WavesModule} from 'angular-bootstrap-md';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FileSelectDirective} from 'ng2-file-upload';
 import {ContractService} from './services/contract.service';
@@ -8,6 +8,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {NgxSpinnerModule} from 'ngx-spinner';
 import {ScItemResolver} from './resolvers/ScItemResolver';
 import {IpfsRestClient} from './services/ipfs-rest-client';
+import {ItemDetailResolver} from './resolvers/ItemDetailResolver';
 
 
 /**
@@ -23,6 +24,7 @@ import {IpfsRestClient} from './services/ipfs-rest-client';
     WavesModule.forRoot(),
     CardsFreeModule.forRoot(),
     InputsModule.forRoot(),
+    CarouselModule.forRoot(),
     FormsModule,
     HttpClientModule,
     NgxSpinnerModule
@@ -42,6 +44,7 @@ import {IpfsRestClient} from './services/ipfs-rest-client';
     WavesModule,
     CardsFreeModule,
     ReactiveFormsModule,
+    CarouselModule,
     InputsModule,
     HttpClientModule,
     NgxSpinnerModule,
@@ -56,6 +59,7 @@ import {IpfsRestClient} from './services/ipfs-rest-client';
 
       ],
   providers: [
+    ItemDetailResolver,
     ScItemResolver,
     ContractService,
     Web3Service,

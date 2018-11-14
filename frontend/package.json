@@ -20,6 +20,7 @@
     "@angular/platform-browser": "~7.0.0",
     "@angular/platform-browser-dynamic": "~7.0.0",
     "@angular/router": "~7.0.0",
+    "@fortawesome/fontawesome-free": "^5.5.0",
     "@progress/kendo-angular-upload": "^4.2.1",
     "@types/chart.js": "^2.7.40",
     "angular-bootstrap-md": "^6.3.0",

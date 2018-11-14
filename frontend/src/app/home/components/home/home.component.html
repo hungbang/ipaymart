@@ -15,7 +15,7 @@
         <mdb-card-body>
           <!--Title-->
           <mdb-card-title>
-            <h4>Card Title {{items?.length}}</h4>
+            <h4>{{item.title}}</h4>
           </mdb-card-title>
 
           <!--Text-->
@@ -23,7 +23,7 @@
             content.
           </mdb-card-text>
 
-          <a href="#" mdbBtn color="primary" mdbWavesEffect>Button</a>
+          <a mdbBtn color="primary" mdbWavesEffect (click)="viewDetail(item.hashId)">View</a>
         </mdb-card-body>
       </mdb-card>
     </div>

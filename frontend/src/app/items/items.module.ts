@@ -4,6 +4,8 @@ import {SharedModule} from '../shared/shared.module';
 import {ROUTING} from './items.routing';
 import { ItemsComponent } from './components/items/items.component';
 import { ItemComponent } from './components/item/item.component';
+import {ItemDetailComponent} from './components/item-detail/item-detail.component';
+import { ItemPropertiesComponent } from './components/item-properties/item-properties.component';
 
 @NgModule({
   imports: [
@@ -15,7 +17,11 @@ import { ItemComponent } from './components/item/item.component';
 
   ItemsComponent,
 
-  ItemComponent],
+  ItemComponent,
+
+  ItemDetailComponent,
+
+  ItemPropertiesComponent],
   providers: []
 })
 export class ItemsModule {
