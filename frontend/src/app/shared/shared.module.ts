@@ -1,5 +1,5 @@
 import {ModuleWithProviders, NgModule} from '@angular/core';
-import {ButtonsModule, CardsFreeModule, CarouselModule, InputsModule, WavesModule} from 'angular-bootstrap-md';
+import {ButtonsModule, CardsFreeModule, CarouselModule, InputsModule, TableModule, WavesModule} from 'angular-bootstrap-md';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FileSelectDirective} from 'ng2-file-upload';
 import {ContractService} from './services/contract.service';
@@ -9,6 +9,7 @@ import {NgxSpinnerModule} from 'ngx-spinner';
 import {ScItemResolver} from './resolvers/ScItemResolver';
 import {IpfsRestClient} from './services/ipfs-rest-client';
 import {ItemDetailResolver} from './resolvers/ItemDetailResolver';
+import {MetaMaskAccountResolver} from './resolvers/MetaMaskAccountResolver';
 
 
 /**
@@ -25,6 +26,7 @@ import {ItemDetailResolver} from './resolvers/ItemDetailResolver';
     CardsFreeModule.forRoot(),
     InputsModule.forRoot(),
     CarouselModule.forRoot(),
+    TableModule,
     FormsModule,
     HttpClientModule,
     NgxSpinnerModule
@@ -48,6 +50,7 @@ import {ItemDetailResolver} from './resolvers/ItemDetailResolver';
     InputsModule,
     HttpClientModule,
     NgxSpinnerModule,
+    TableModule,
     // Components
 
     // Directives
@@ -59,6 +62,7 @@ import {ItemDetailResolver} from './resolvers/ItemDetailResolver';
 
       ],
   providers: [
+    MetaMaskAccountResolver,
     ItemDetailResolver,
     ScItemResolver,
     ContractService,

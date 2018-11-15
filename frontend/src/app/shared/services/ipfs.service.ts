@@ -13,10 +13,10 @@ export class IpfsService {
   //   this.hash = filesAdded[0].hash;
   // }
   //
-  // public async get(hash: string) {
-  //   const fileBuffer = await this.ipfs.files.cat(hash);
-  //   console.log(fileBuffer.toString());
-  // }
+  public async get(hash: string) {
+    const fileBuffer = await this.ipfs.files.cat(hash);
+    console.log(fileBuffer.toString());
+  }
 
 
 }
