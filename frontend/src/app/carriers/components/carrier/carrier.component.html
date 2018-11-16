@@ -1,0 +1,27 @@
+<div class="container item-container align-middle">
+  <form [formGroup]="deliveryForm">
+    <div class="row">
+      <div class="col">
+        <div class="md-form">
+          <input mdbInputDirective type="text" id="name" class="form-control" formControlName="name">
+          <label for="name">Carrier Name</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <button mdbBtn type="button" color="default" mdbWavesEffect (click)="registerCarrier()">Submit</button>
+        <button mdbBtn type="button" color="warning" mdbWavesEffect (click)="resetItemForm()">Cancel</button>
+      </div>
+    </div>
+
+    <!--<div class="row">-->
+    <!--<span *ngIf="processing" class="waiting mt-3 ml-3 pl-3">Your item is creating. Please don't close this page until the transaction is finish.</span>-->
+    <!--<span *ngIf="created" class="waiting mt-3 ml-3 pl-3">Your item has been inserted. Go to home.</span>-->
+    <!--</div>-->
+
+  </form>
+
+
+</div>

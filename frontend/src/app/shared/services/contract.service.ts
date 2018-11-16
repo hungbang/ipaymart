@@ -38,8 +38,9 @@ export class ContractService {
 
   /**
    * Seller chooses a delivery to send goods
-   * @param ipfsId
-   * @param  deliveryAddress address of delivery
+   * @param ipfsId item hash
+   * @param  deliveryAddress carrier id
+   * @param account current account
    */
 
   sendItem = (account:any, ipfsId: any, deliveryAddress: any) => {
@@ -51,10 +52,12 @@ export class ContractService {
 
   /**
    * Delivery update status of goods when sends goods to buyer
-   * @param ipfsId
+   * @param ipfsId item hashId
+   * @param account current account
+   *
    */
-  deliverItem = (account:any, ipfsId: any, deliveryAddress:any) => {
-    ebuyContract.sendItem(ipfsId, deliveryAddress, {from: account}, (err: any, success: any) => {
+  deliverItem = (account:any, ipfsId) => {
+    ebuyContract.deliverItem(ipfsId, {from: account}, (err: any, success: any) => {
       console.log(err);
       console.log(success);
     });
@@ -100,6 +103,11 @@ export class ContractService {
     });
   }
 
+  /**
+   * @param address meta mask address of carrier
+   * @param status status of carrier
+   * @param hashId ipfs id that store carrier information
+   */
   listDeliveries(): Observable<any> {
 
     return Observable.create((observe: any) => {

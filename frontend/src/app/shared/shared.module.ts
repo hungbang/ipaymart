@@ -1,5 +1,14 @@
 import {ModuleWithProviders, NgModule} from '@angular/core';
-import {ButtonsModule, CardsFreeModule, CarouselModule, InputsModule, TableModule, WavesModule} from 'angular-bootstrap-md';
+import {
+  ButtonsModule,
+  CardsFreeModule,
+  CarouselModule,
+  InputsModule,
+  MDBBootstrapModule,
+  ModalModule,
+  TableModule,
+  WavesModule
+} from 'angular-bootstrap-md';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FileSelectDirective} from 'ng2-file-upload';
 import {ContractService} from './services/contract.service';
@@ -10,6 +19,10 @@ import {ScItemResolver} from './resolvers/ScItemResolver';
 import {IpfsRestClient} from './services/ipfs-rest-client';
 import {ItemDetailResolver} from './resolvers/ItemDetailResolver';
 import {MetaMaskAccountResolver} from './resolvers/MetaMaskAccountResolver';
+import {NgSelectModule} from '@ng-select/ng-select';
+import {CommonModule} from '@angular/common';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatStepperModule} from '@angular/material';
 
 
 /**
@@ -21,6 +34,7 @@ import {MetaMaskAccountResolver} from './resolvers/MetaMaskAccountResolver';
 
 @NgModule({
   imports: [
+    MDBBootstrapModule.forRoot(),
     ButtonsModule.forRoot(),
     WavesModule.forRoot(),
     CardsFreeModule.forRoot(),
@@ -28,8 +42,13 @@ import {MetaMaskAccountResolver} from './resolvers/MetaMaskAccountResolver';
     CarouselModule.forRoot(),
     TableModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    ModalModule.forRoot(),
+    NgSelectModule,
+    CommonModule,
+    MatStepperModule
 
   ],
   declarations: [
@@ -42,15 +61,21 @@ import {MetaMaskAccountResolver} from './resolvers/MetaMaskAccountResolver';
   ],
   exports: [
     // Modules
+    MDBBootstrapModule,
+    ModalModule,
     ButtonsModule,
     WavesModule,
     CardsFreeModule,
+    FormsModule,
     ReactiveFormsModule,
     CarouselModule,
     InputsModule,
     HttpClientModule,
     NgxSpinnerModule,
     TableModule,
+    NgSelectModule,
+    CommonModule,
+    MatStepperModule,
     // Components
 
     // Directives

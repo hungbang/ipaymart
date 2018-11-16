@@ -1,0 +1,68 @@
+<div class="container item-container align-middle">
+  <form [formGroup]="itemForm">
+    <div class="row">
+      <div class="col">
+        <div class="md-form">
+          <input mdbInputDirective type="text" id="title" class="form-control" formControlName="title">
+          <label for="title">Title</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <div class="md-form">
+          <input mdbInputDirective type="text" id="category" class="form-control" formControlName="category">
+          <label for="category">Category</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <div class="md-form">
+          <input mdbInputDirective type="text" id="description" class="form-control" formControlName="description">
+          <label for="description">Description</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <div class="md-form">
+          <input mdbInputDirective type="text" id="price" class="form-control" formControlName="price">
+          <label for="price">Price</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-3 mb-3">
+      <div class="col-4 col-lg-4 col-md-4 col-sm-4">
+        <input class="d-flex align-content-start" type="file" name="photo" ng2FileSelect ng2FileDrop [uploader]="uploader" (onFileSelected)="handleSelectedFiles($event)" multiple/>
+      </div>
+    </div>
+
+    <div class="row">
+      <div *ngIf="imageFiles?.length > 0" class="d-flex align-content-start">
+        <div class="d-flex p-2" *ngFor="let image of imageFiles">
+          <img height="100px" width="100px" src="{{image}}" />
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <button mdbBtn type="button" color="default" mdbWavesEffect (click)="createItem()">Create</button>
+        <button mdbBtn type="button" color="warning" mdbWavesEffect (click)="resetItemForm()">Cancel</button>
+      </div>
+    </div>
+
+    <!--<div class="row">-->
+    <!--<span *ngIf="processing" class="waiting mt-3 ml-3 pl-3">Your item is creating. Please don't close this page until the transaction is finish.</span>-->
+    <!--<span *ngIf="created" class="waiting mt-3 ml-3 pl-3">Your item has been inserted. Go to home.</span>-->
+    <!--</div>-->
+
+  </form>
+
+
+</div>

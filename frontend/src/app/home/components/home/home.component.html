@@ -3,13 +3,12 @@
   <div *ngIf="items?.length > 0">
     <div class="card-deck row">
       <!-- Card -->
-      <mdb-card class="col-md-3 pr-0 pl-0 mb-3" *ngFor="let item of items" >
+      <mdb-card class="col-md-3 pr-0 pl-0 mb-3" *ngFor="let item of items">
         <div class="view overlay waves-light" mdbWavesEffect>
           <!-- Card img -->
-          <mdb-card-img class="img-thumbnail" [src]="item.images ? item.images[0] : imageDefault" alt="Card image cap"></mdb-card-img>
-          <a>
-            <div class="mask rgba-white-slight"></div>
-          </a>
+          <mdb-card-img class="img-thumbnail" [src]="item.images ? item.images[0] : imageDefault"
+                        alt="Card image cap"></mdb-card-img>
+          <div class="mask rgba-white-slight"></div>
         </div>
         <!--Card content-->
         <mdb-card-body>
@@ -23,7 +22,9 @@
             content.
           </mdb-card-text>
 
-          <a mdbBtn color="primary" mdbWavesEffect (click)="viewDetail(item.hashId)">View</a>
+          <button mdbBtn color="primary" outline="true" size="sm" type="button" class="m-0" mdbWavesEffect
+                  (click)="viewDetail(item.hashId)">View
+          </button>
         </mdb-card-body>
       </mdb-card>
     </div>

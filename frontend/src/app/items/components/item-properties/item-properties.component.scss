@@ -1,0 +1,13 @@
+@import '../../../../variables';
+
+
+.item-container{
+  justify-content: center;
+  text-align: center;
+  .waiting{
+    font-size: $xlg-font-size;
+    color: $strong-cyan-lime-green;
+    font-weight: $font-weight-bold;
+  }
+
+}
