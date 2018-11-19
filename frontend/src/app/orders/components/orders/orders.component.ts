@@ -1,7 +1,7 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ContractService} from '../../../shared/services/contract.service';
-import {map, mergeMap, tap} from 'rxjs/operators';
+import {map, mergeMap} from 'rxjs/operators';
 import {forkJoin} from 'rxjs';
 import {OrderStatus, ScOrder} from '../../../shared/model/sc-order';
 import {DateTime} from 'luxon';
@@ -21,24 +21,23 @@ export class OrdersComponent implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute,
               public contractService: ContractService,
+              private ngZone: NgZone,
               private changeDetectorRef: ChangeDetectorRef) {
   }
 
   ngOnInit() {
     const data = this.activatedRoute.snapshot.data;
-    console.log(data);
     this.currentAccount = data.currentAccount;
     this.loadOrders();
   }
 
-  private async loadOrders() {
-    const observOfHashId = await this.contractService.myBuyItems(this.currentAccount);
+  private loadOrders() {
+    const observOfHashId = this.contractService.myBuyItems(this.currentAccount);
 
     const result = observOfHashId.pipe(
       mergeMap(hashes => forkJoin(
         hashes.map(hash => {
           return this.contractService.listOrders(hash).pipe(
-            tap(val => console.log(val)),
             map(val => val.orders),
             map(val => val.length > 0 ? val[0] : null)
           );
@@ -49,7 +48,7 @@ export class OrdersComponent implements OnInit {
       this.orders = orders.filter(order => {
         return order !== null;
       });
-      this.changeDetectorRef.markForCheck();
+      this.ngZone.run(() => this.changeDetectorRef.markForCheck());
     });
   }
 

@@ -22,12 +22,11 @@ export class CarrierComponent implements OnInit {
 
   ngOnInit() {
     const data = this.activateRouter.snapshot.data;
-    console.log(data);
     this.currentAccount = data.currentAccount;
 
   }
 
-  async registerCarrier(): void {
+  async registerCarrier() {
     const data = this.deliveryForm.getRawValue();
     if (this.deliveryForm.invalid) {
       return;

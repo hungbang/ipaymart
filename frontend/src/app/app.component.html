@@ -14,7 +14,8 @@
       <!-- Links -->
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a [routerLink]="['/home']" class="nav-link waves-light" mdbWavesEffect>Home<span class="sr-only">(current)</span></a>
+          <a [routerLink]="['/home']" class="nav-link waves-light" mdbWavesEffect>Home<span
+            class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
           <a [routerLink]="['/items/new']" class="nav-link waves-light" mdbWavesEffect>Sell</a>
@@ -26,7 +27,8 @@
           <a [routerLink]="['/orders']" class="nav-link waves-light" mdbWavesEffect>My Orders</a>
         </li>
         <li class="nav-item">
-          <a [routerLink]="['/sell-items']" class="nav-link waves-light" mdbWavesEffect>My Sell Items</a>
+          <a [routerLink]="['/sell-items/account/' + currentAccount]" class="nav-link waves-light" mdbWavesEffect>My
+            Sell Items</a>
         </li>
         <li class="nav-item">
           <a href="profile" class="nav-link waves-light" mdbWavesEffect>My Profile</a>
@@ -40,9 +42,9 @@
 
       <!-- Search form -->
       <!--<form class="form-inline waves-light" mdbWavesEffect>-->
-        <!--<div class="md-form mt-0">-->
-          <!--<input class="form-control mr-sm-2" type="text" placeholder="Search">-->
-        <!--</div>-->
+      <!--<div class="md-form mt-0">-->
+      <!--<input class="form-control mr-sm-2" type="text" placeholder="Search">-->
+      <!--</div>-->
       <!--</form>-->
     </links>
     <!-- Collapsible content -->
@@ -61,13 +63,13 @@
 <main class="text-center py-5">
 
   <!--<div class="container">-->
-    <!--<div class="row">-->
-      <!--<div class="col-md-12">-->
+  <!--<div class="row">-->
+  <!--<div class="col-md-12">-->
 
-        <router-outlet></router-outlet>
+  <router-outlet></router-outlet>
 
-      <!--</div>-->
-    <!--</div>-->
+  <!--</div>-->
+  <!--</div>-->
   <!--</div>-->
 
 </main>

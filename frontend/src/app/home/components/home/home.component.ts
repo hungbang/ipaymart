@@ -4,9 +4,10 @@ import {forkJoin, of} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {IpfsRestClient} from '../../../shared/services/ipfs-rest-client';
 import {Item} from '../../../shared/model/item';
-import {mergeMap, tap} from 'rxjs/operators';
+import {catchError, mergeMap, tap} from 'rxjs/operators';
 import {ItemDetailComponent} from '../../../items/components/item-detail/item-detail.component';
 import {ScItem} from '../../../shared/model/sc-item';
+import {HandleError, HttpErrorHandler} from '../../../shared/services/http-error-handler';
 
 @Component({
   selector: 'app-home',
@@ -20,16 +21,20 @@ export class HomeComponent implements OnInit {
   resolveData: any;
   imageDefault = 'https://mdbootstrap.com/img/Photos/Others/images/16.jpg';
   scItems: ScItem[] = [];
+  private handleError: HandleError;
+
   constructor(private contractService: ContractService,
               private changeDetectorRef: ChangeDetectorRef,
+              private httpErrorHandler: HttpErrorHandler,
               private activatedRoute: ActivatedRoute,
               private route: Router,
               private ipfsRestClient: IpfsRestClient) {
+    this.handleError = httpErrorHandler.createHandleError('IpfsRestClient');
+
   }
 
   ngOnInit() {
     this.resolveData = this.activatedRoute.snapshot.data;
-    console.log(this.resolveData);
     this.scItems = this.resolveData.data;
     this.loadItemFromIPFS();
   }
@@ -48,18 +53,27 @@ export class HomeComponent implements OnInit {
       mergeMap(items => forkJoin(
         items.map(item => {
           return this.ipfsRestClient.getFile(item.hashId).pipe(
-            tap(value => value.hashId = item.hashId)
+            tap(value => value.hashId = item.hashId),
+            catchError(this.handleError('getFile', null))
           );
         })
       ))
     ).subscribe(values => {
-      console.log(values);
-      this.items = values;
+      this.items = values.filter(val => val !== null);
       this.changeDetectorRef.markForCheck();
     });
   }
 
   viewDetail(hashId: any): void {
     this.route.navigate([`${ItemDetailComponent.ITEM_DETAIL}/${hashId}`]);
+  }
+
+  toImageDefault(images: any[]): any {
+    if (images.length === 0) {
+      return this.imageDefault;
+    } else {
+      return (images[0] === undefined && images[0] === null) ? this.imageDefault : images[0];
+
+    }
   }
 }

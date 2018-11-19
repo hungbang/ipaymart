@@ -1,12 +1,14 @@
 <div class="container-fluid align-content-center">
-
-  <div *ngIf="items?.length > 0">
+  <ng-template #loading>
+    <h3>Loading ...</h3>
+  </ng-template>
+  <div *ngIf="items?.length > 0; else loading">
     <div class="card-deck row">
       <!-- Card -->
       <mdb-card class="col-md-3 pr-0 pl-0 mb-3" *ngFor="let item of items">
-        <div class="view overlay waves-light" mdbWavesEffect>
+        <div class="view overlay waves-light" mdbWavesEffect *ngIf="item">
           <!-- Card img -->
-          <mdb-card-img class="img-thumbnail" [src]="item.images ? item.images[0] : imageDefault"
+          <mdb-card-img class="img-thumbnail" [src]="toImageDefault(item?.images)"
                         alt="Card image cap"></mdb-card-img>
           <div class="mask rgba-white-slight"></div>
         </div>
@@ -29,5 +31,7 @@
       </mdb-card>
     </div>
   </div>
+
+
 </div>
 

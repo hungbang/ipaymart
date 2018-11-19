@@ -1,11 +1,12 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ContractService} from '../../../shared/services/contract.service';
-import {forkJoin} from 'rxjs';
-import {mergeMap, tap} from 'rxjs/operators';
+import {forkJoin, of} from 'rxjs';
+import {mergeMap} from 'rxjs/operators';
 import {ScItem, ScItemStatus} from '../../../shared/model/sc-item';
 import {Carrier} from '../../../shared/model/carrier';
 import {CarrierStatus} from '../../../shared/model/carrier-status';
+import {OrderStatus} from '../../../shared/model/sc-order';
 
 export class ItemDetailVO {
   receiver: any;
@@ -26,6 +27,7 @@ export class SellItemsComponent implements OnInit {
   currentAccount: any;
   scItems: ScItem[] = [];
   scItemStatus = ScItemStatus;
+  orderStatus = OrderStatus;
   contactDetail: any;
   itemDetail: ItemDetailVO = new ItemDetailVO();
 
@@ -40,19 +42,21 @@ export class SellItemsComponent implements OnInit {
   selectedCarrier = 'QmdwbN4HypYhHwXZpjyLqEJsy38PK1tqDnPj2k2VLadBQr';
   contract: any;
   referenceId: any;
-  defaultCarrier: Carrier;
+
   constructor(private activatedRoute: ActivatedRoute,
               private changeDetectorRef: ChangeDetectorRef,
+              private ngZone: NgZone,
               public contractService: ContractService) {
+
   }
 
   ngOnInit() {
     const data = this.activatedRoute.snapshot.data;
     console.log(data);
-    this.currentAccount = data.currentAccount;
+    console.log(data.hashIds);
 
     this.contract = this.contractService.getContract();
-    this.loadScItems();
+    this.loadScItems(data.hashIds);
     this.contractService.listDeliveries().subscribe((carriers: Carrier[]) => {
       this.carriers = [...this.carriers, ...carriers];
       this.changeDetectorRef.markForCheck();
@@ -67,23 +71,18 @@ export class SellItemsComponent implements OnInit {
   }
 
 
-  private async loadScItems() {
-    const observOfHashId = await this.contractService.mySellItems(this.currentAccount);
+  private loadScItems(hashIds: any[]) {
 
-    const results = observOfHashId.pipe(
+    of(hashIds).pipe(
       mergeMap(hashes => forkJoin(
         hashes.map(hash => {
-          return this.contractService.getItem(hash).pipe(
-            tap(val => console.log(val))
-          );
+          return this.contractService.getItem(hash);
         })
       ))
-    );
-
-    results.subscribe((value: ScItem[]) => {
+    ).subscribe((value: ScItem[]) => {
       this.scItems = [...this.scItems, ...value];
-      this.changeDetectorRef.markForCheck();
-      console.log(this.scItems);
+      // [HBQ] workaround to markForCheck
+      this.ngZone.run(() => this.changeDetectorRef.markForCheck());
     });
   }
 
@@ -94,20 +93,20 @@ export class SellItemsComponent implements OnInit {
   onOpen(hashId: any): void {
     this.itemDetail = new ItemDetailVO();
     this.contractService.listOrders(hashId).subscribe(data => {
-      console.log(data);
-      if (data.orders.length > 0) {
+      const lastOrder = data.orders.length - 1;
+      if (lastOrder >= 0) {
         this.itemDetail = {
-          receiver: data.orders[0].buyer,
+          receiver: data.orders[lastOrder].buyer,
           seller: data.seller,
-          contactDetail: data.orders[0].receiverContact,
+          contactDetail: data.orders[lastOrder].receiverContact,
           delivery: data.orders.currentAccount,
-          orderStatus: data.orders[0].orderStatus
+          orderStatus: data.orders[lastOrder].orderStatus
         };
         this.changeDetectorRef.markForCheck();
       } else {
         this.itemDetail = {
           receiver: 'None',
-          seller: this.currentAccount,
+          seller: data.seller,
           contactDetail: 'None',
           delivery: 'None',
           orderStatus: null
@@ -123,5 +122,4 @@ export class SellItemsComponent implements OnInit {
     this.referenceId = hashId;
     this.contractService.sendItem(this.currentAccount, hashId, this.selectedCarrier);
   }
-
 }

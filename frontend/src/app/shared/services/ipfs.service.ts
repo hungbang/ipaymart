@@ -15,7 +15,6 @@ export class IpfsService {
   //
   public async get(hash: string) {
     const fileBuffer = await this.ipfs.files.cat(hash);
-    console.log(fileBuffer.toString());
   }
 
 

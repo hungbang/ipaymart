@@ -23,6 +23,8 @@ import {NgSelectModule} from '@ng-select/ng-select';
 import {CommonModule} from '@angular/common';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatStepperModule} from '@angular/material';
+import {HttpErrorHandler} from './services/http-error-handler';
+import {MySellItemsResolver} from './resolvers/my-sell-items-resolver';
 
 
 /**
@@ -49,7 +51,6 @@ import {MatStepperModule} from '@angular/material';
     NgSelectModule,
     CommonModule,
     MatStepperModule
-
   ],
   declarations: [
     // Components
@@ -87,12 +88,14 @@ import {MatStepperModule} from '@angular/material';
 
       ],
   providers: [
+    MySellItemsResolver,
     MetaMaskAccountResolver,
     ItemDetailResolver,
     ScItemResolver,
     ContractService,
     Web3Service,
-    IpfsRestClient
+    IpfsRestClient,
+    HttpErrorHandler
   ]
 })
 export class SharedModule {

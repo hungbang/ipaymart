@@ -3,8 +3,10 @@
   <div class="row light-green-text mb-3 ml-1 text-uppercase">
     <h3>sell items</h3>
   </div>
-
-  <table mdbTable hover="true" *ngIf="scItems?.length > 0">
+  <ng-template #loading>
+    <h3>Loading ...</h3>
+  </ng-template>
+  <table mdbTable hover="true" *ngIf="scItems?.length > 0; else loading">
     <thead>
     <tr>
       <th class="font-weight-bold" *ngFor="let head of headElements" scope="col">{{head}}</th>
@@ -27,9 +29,12 @@
                 <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()">
                   <span aria-hidden="true">×</span>
                 </button>
-                <h4 class="modal-title w-100" id="myModalLabel">Your Item {{itemDetail.orderStatus}}</h4>
+                <h4 class="modal-title w-100" id="myModalLabel">Your Item</h4>
               </div>
               <div class="modal-body ml-4">
+                <div class="row mb-4">
+                    <h3>{{orderStatus.toOrderStatusMessage(itemDetail.orderStatus)}}</h3>
+                </div>
                 <div class="row mb-4">
                   <span class="fa fa-address-card"> <span class="font-weight-bold text-uppercase"> Shipping to:</span>  {{itemDetail?.contactDetail}}</span>
                 </div>

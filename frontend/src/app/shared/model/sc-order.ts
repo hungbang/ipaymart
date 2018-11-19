@@ -20,6 +20,23 @@ export namespace OrderStatus {
         return OrderStatus.None;
     }
   }
+
+  export function toOrderStatusMessage(status: any): string {
+    switch (status) {
+      case '0':
+        return 'Your item is Ordered.';
+      case '1':
+        return 'Your item is In Delivery';
+      case '2':
+        return 'Your item is delivered to buyer.';
+      case '3':
+        return 'Unavailable for sell.';
+      case '4':
+        return 'Buyer has been cancelled.';
+      default:
+        return 'Available for sell.';
+    }
+  }
 }
 
 export class ScOrder {

@@ -76,10 +76,8 @@ export class ItemPropertiesComponent implements OnInit {
   handleSelectedFiles(files: File[]): void {
     if (files) {
       for (const file of Object.values(files)) {
-        console.log(file);
         const fileReader = new FileReader();
         fileReader.onload = () => {
-          console.log(fileReader.result);
           this.imageFiles.push(fileReader.result);
           this.changeDetectorRef.markForCheck();
         };

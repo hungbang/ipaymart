@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 import {environment} from '../../../environments/environment';
 import {NgxSpinnerService} from 'ngx-spinner';
 import {Observable} from 'rxjs';
+import {CarryingItem} from '../model/carrying-item';
 
 declare var require: any;
 const ContractABI = require('../../../assets/contract/EbuyContract.json');
@@ -141,7 +142,7 @@ export class ContractService {
           observe.error(err);
         } else {
           if (result.length > 0) {
-            observe.next(result.split(this.BREAK_LINE));
+            observe.next(result.substr(this.BREAK_LINE.length).split(this.BREAK_LINE));
           } else {
             observe.next([]);
           }
@@ -173,11 +174,11 @@ export class ContractService {
 
       ebuyContract.listItems.call((err: any, result: any) => {
         const items = [] as  any;
-        const itemIds = result[0].split(this.BREAK_LINE);
+        const itemIds = result[0].substr(this.BREAK_LINE.length).split(this.BREAK_LINE);
 
         for (let i = 0; i < result[1].length; i++) {
           items.push({
-            hashId: itemIds[i + 1],
+            hashId: itemIds[i],
             price: result[1][i].toNumber(),
             seller: result[2][i],
             buyer: result[3][i] === '0x0000000000000000000000000000000000000000' ? '' : result[3][i],
@@ -207,7 +208,10 @@ export class ContractService {
                 createdAt: result[5].toNumber(),
                 soldAt: result[6].toNumber()
                };
+         console.log('item=====', item);
+
          if(err) {
+           console.log('====file when load item', err);
            observe.error(err);
          }
          observe.next(item);
@@ -255,6 +259,36 @@ export class ContractService {
   toEther(wei:number) {
     return wei/1000000000000000000;
   }
+
+  /**
+   * list carrying item of carrier
+   * @param account
+   * @returns {Observable<CarryingItem>}
+   */
+  listCarryingItems(account:any) : Observable<CarryingItem[]> {
+    return Observable.create((observe:any)=>{
+      ebuyContract.listCarryingItems.call(account, (err:any, result:any)=>{
+        if(err) {
+          observe.error(err);
+        } else {
+          let items = [] as CarryingItem[];
+          let ids = result[0].split(this.BREAK_LINE);
+          for(let i = 0; i < result[1].length;i++) {
+
+            let item = new CarryingItem();
+            item.hashId = ids[i+1];
+            item.orderId = result[1][i].toNumber();
+            item.status =  result[2][i].toNumber();
+            items.push(item);
+          }
+
+          observe.next(items);
+        }
+        observe.complete();
+      })
+    });
+  }
+
   // listItems = async (): Promise<any> =>{
   //
   //   return ebuyContract.listItems.call((err:any, result:any)=>{

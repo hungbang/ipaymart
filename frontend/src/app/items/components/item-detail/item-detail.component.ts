@@ -31,8 +31,6 @@ export class ItemDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.item);
-
     this.web3Service.getSelectedAccount().subscribe((account: any) => {
       console.log('=======account=========', account);
       this.selectedAccount = account;

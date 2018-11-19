@@ -5,4 +5,7 @@ export class Item {
   price: number;
   images: any[];
   hashId: any;
+
+// *** Custom code below this line *** //
+
 }

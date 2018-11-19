@@ -5,13 +5,13 @@ import {Web3Service} from '../services/web3.service';
 import {Injectable} from '@angular/core';
 
 @Injectable()
-export class MetaMaskAccountResolver implements Resolve<ScItem[]> {
+export class MetaMaskAccountResolver implements Resolve<string> {
 
   constructor(private web3Service: Web3Service) {
 
   }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<ScItem[]> | Promise<ScItem[]> | ScItem[] {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<string> | Promise<string> | string {
     return this.web3Service.getSelectedAccount();
   }
 

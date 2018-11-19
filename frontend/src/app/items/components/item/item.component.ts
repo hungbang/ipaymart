@@ -35,7 +35,6 @@ export class ItemComponent implements OnInit {
         this.selectedTab = ItemTab.PROPERTIES;
       } else {
         this.resolveData = this.activatedRoute.snapshot.data;
-        console.log(this.resolveData);
         this.reloadItem();
       }
     });
@@ -43,7 +42,6 @@ export class ItemComponent implements OnInit {
 
 
   private reloadItem() {
-    console.log(this.resolveData);
     this.item = this.resolveData.itemData;
   }
 }

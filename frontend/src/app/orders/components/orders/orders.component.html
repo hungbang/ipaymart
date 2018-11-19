@@ -4,7 +4,11 @@
     <h3>Your Orders</h3>
   </div>
 
-  <table mdbTable hover="true" *ngIf="orders?.length > 0">
+  <ng-template #loading>
+    <h3>Loading ...</h3>
+  </ng-template>
+
+  <table mdbTable hover="true" *ngIf="orders?.length > 0; else loading">
     <thead>
     <tr>
       <th class="font-weight-bold" *ngFor="let head of headElements" scope="col">{{head}}</th>
