@@ -1,11 +1,12 @@
 import {Inject, Injectable} from '@angular/core';
 import {IPFS} from '../../ipfs';
-import { Buffer } from 'buffer';
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class IpfsService {
 
-  constructor(@Inject(IPFS) private ipfs) {}
+  constructor(@Inject(IPFS) private ipfs) {
+  }
 
   // public async set(path: string, value: string) {
   //   const content = Buffer.from(value);
@@ -13,8 +14,25 @@ export class IpfsService {
   //   this.hash = filesAdded[0].hash;
   // }
   //
-  public async get(hash: string) {
-    const fileBuffer = await this.ipfs.files.cat(hash);
+  public get(hash: string): Observable<string> {
+
+    return Observable.create(observe => {
+      const data: Promise = this.ipfs.files.cat(hash);
+      data.then(val => {
+        console.log(val);
+        if (val) {
+          observe.next(data);
+
+        } else {
+          observe.error('can not get data');
+        }
+      }).catch(
+        observe.error('can not get data')
+      );
+
+      observe.complete();
+
+    });
   }
 
 

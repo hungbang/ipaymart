@@ -268,6 +268,8 @@ export class ContractService {
   listCarryingItems(account:any) : Observable<CarryingItem[]> {
     return Observable.create((observe:any)=>{
       ebuyContract.listCarryingItems.call(account, (err:any, result:any)=>{
+        console.log('errror', err);
+        console.log('result', result);
         if(err) {
           observe.error(err);
         } else {

@@ -49,9 +49,9 @@
                     <span class="fa fa-address-card font-weight-bold text-uppercase"> Carriers</span>
                   </div>
                   <div class="col-md-4 col-sm-6 col-xs-12 pl-0 pr-0">
-                    <ng-select [items]="carriers"
-                               bindLabel="address"
-                               bindValue="hashId" [(ngModel)]="selectedCarrier">
+                    <ng-select [items]="carrierOptions"
+                               bindLabel="name"
+                               bindValue="address" [(ngModel)]="selectedCarrier">
                     </ng-select>
                   </div>
 

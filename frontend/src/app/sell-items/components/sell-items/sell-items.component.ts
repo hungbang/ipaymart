@@ -1,12 +1,15 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, NgZone, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ContractService} from '../../../shared/services/contract.service';
-import {forkJoin, of} from 'rxjs';
-import {mergeMap} from 'rxjs/operators';
+import {forkJoin, from, Observable, of} from 'rxjs';
+import {map, mergeMap, tap} from 'rxjs/operators';
 import {ScItem, ScItemStatus} from '../../../shared/model/sc-item';
 import {Carrier} from '../../../shared/model/carrier';
 import {CarrierStatus} from '../../../shared/model/carrier-status';
 import {OrderStatus} from '../../../shared/model/sc-order';
+import {IpfsService} from '../../../shared/services/ipfs.service';
+import {IPFS} from '../../../ipfs';
+import {Web3Service} from '../../../shared/services/web3.service';
 
 export class ItemDetailVO {
   receiver: any;
@@ -16,6 +19,11 @@ export class ItemDetailVO {
   orderStatus: any;
 }
 
+
+export class CarrierOption {
+  address: string;
+  name: string;
+}
 
 @Component({
   selector: 'app-sell-items',
@@ -30,7 +38,7 @@ export class SellItemsComponent implements OnInit {
   orderStatus = OrderStatus;
   contactDetail: any;
   itemDetail: ItemDetailVO = new ItemDetailVO();
-
+  carrierOptions: CarrierOption[] = [];
   headElements = ['Item Hash', 'Price', 'Status', 'Action'];
   carriers: Carrier[] = [
     {
@@ -43,24 +51,29 @@ export class SellItemsComponent implements OnInit {
   contract: any;
   referenceId: any;
 
-  constructor(private activatedRoute: ActivatedRoute,
+  constructor(@Inject(IPFS) private ipfs,
+              private activatedRoute: ActivatedRoute,
               private changeDetectorRef: ChangeDetectorRef,
+              private ipfsService: IpfsService,
               private ngZone: NgZone,
+              private web3Service: Web3Service,
               public contractService: ContractService) {
 
   }
 
   ngOnInit() {
     const data = this.activatedRoute.snapshot.data;
-    console.log(data);
-    console.log(data.hashIds);
-
     this.contract = this.contractService.getContract();
     this.loadScItems(data.hashIds);
     this.contractService.listDeliveries().subscribe((carriers: Carrier[]) => {
+      this.loadCarriers(carriers);
       this.carriers = [...this.carriers, ...carriers];
       this.changeDetectorRef.markForCheck();
     });
+
+    this.web3Service.getSelectedAccount().subscribe(account => {
+      this.currentAccount = account;
+    })
 
     this.contract.ItemSentEvent().watch((err: any, result: any) => {
       console.log(result);
@@ -118,8 +131,31 @@ export class SellItemsComponent implements OnInit {
 
 
   saveDelivery(hashId: any): void {
+    console.log(this.selectedCarrier);
+    console.log(this.currentAccount);
+    console.log(hashId);
+    const carrier = this.carriers.filter(val => val.hashId === this.selectedCarrier)[0];
     // TODO: we need to watch ItemSentEvent to confirm whether transaction success or not.
     this.referenceId = hashId;
-    this.contractService.sendItem(this.currentAccount, hashId, this.selectedCarrier);
+    this.contractService.sendItem(this.currentAccount, hashId, carrier.address);
+  }
+
+  private loadCarriers(carriers: Carrier[]): void {
+    of(carriers.map(value => value.hashId)).pipe(
+      mergeMap(hashes => forkJoin(
+        hashes.map(hash => {
+          return from(this.ipfs.files.cat(hash)).pipe(
+            tap(val => console.log(val)),
+            map(val => {
+              const carrierOption = {address: hash, name: JSON.parse(val.toString()).name};
+              return carrierOption;
+            })
+          );
+        })
+      ))
+    ).subscribe(value => {
+      this.carrierOptions = [...this.carrierOptions, ...value];
+      this.changeDetectorRef.markForCheck();
+    });
   }
 }
