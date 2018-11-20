@@ -1,0 +1,24 @@
+<div class="container" *ngIf="carryingItems?.length > 0">
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Item Id</th>
+      <th scope="col">Carrier Status</th>
+      <th scope="col">Action</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of carryingItems;index as i">
+      <th scope="row">{{i + 1}}</th>
+      <td>{{item.hashId}}</td>
+      <td>{{carrierStatus.toCarrierStatus(item.status)}}</td>
+      <td>
+        <button mdbBtn type="button" gradient="purple" rounded="true" mdbWavesEffect (click)="onDelivered(item.hashId)">Delivered</button>
+      </td>
+    </tr>
+
+    </tbody>
+  </table>
+</div>
