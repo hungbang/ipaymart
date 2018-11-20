@@ -234,12 +234,12 @@ export class ContractService {
             buyer: result[1][i],
             delivery: result[2][i],
             receiverContact: receiverInfo[i + 1],
-            orderTime : orderTrackingTimes[0],
-            deliveryTime : orderTrackingTimes[1],
-            deliveredTime : orderTrackingTimes[2],
-            closedTime: orderTrackingTimes[3],
-            orderStatus: orderStatuses[i + 1]
-
+            orderTime : +orderTrackingTimes[0],
+            deliveryTime : +orderTrackingTimes[1],
+            deliveredTime : +orderTrackingTimes[2],
+            closedTime: +orderTrackingTimes[3],
+            orderStatus: +orderStatuses[i + 1],
+            itemHashId: hashId
           });
         }
         if (err) {

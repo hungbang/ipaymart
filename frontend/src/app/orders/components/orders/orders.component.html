@@ -21,13 +21,17 @@
       <td>{{scOrderStatus.toOrderStatus(el.orderStatus)}}</td>
       <td>{{toDate(el.orderTime) | date: 'medium'}}</td>
       <td>
-        <button mdbBtn color="primary" outline="true" size="sm" type="button" class="m-0" mdbWavesEffect (click)="basicModal.show()">Order Tracking
+        <button *ngIf="el.orderStatus !== 2" mdbBtn color="primary" outline="true" size="sm" type="button" class="m-0"
+                mdbWavesEffect (click)="basicModal.show()">Order Tracking
+        </button>
+        <button *ngIf="el.orderStatus === 2" mdbBtn color="primary" outline="true" size="sm" type="button" class="m-0"
+                mdbWavesEffect (click)="onReceive(el.itemHashId)">Receive Order
         </button>
       </td>
 
 
-
-      <div mdbModal (open)="orderTracking(el)" #basicModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true">
+      <div mdbModal (open)="orderTracking(el)" #basicModal="mdbModal" class="modal fade" tabindex="-1" role="dialog"
+           aria-labelledby="myBasicModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -39,7 +43,7 @@
             <div class="modal-body">
               <ul class="progress-tracker progress-tracker--vertical">
                 <li class="progress-step" [class.is-complete]="el.orderStatus >= 0">
-                  <span  class="progress-marker"></span>
+                  <span class="progress-marker"></span>
                   <span class="progress-text text-left">Ordered</span>
                 </li>
                 <li class="progress-step" [class.is-complete]="el.orderStatus >= 1">
@@ -54,7 +58,9 @@
 
             </div>
             <div class="modal-footer">
-              <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close" (click)="basicModal.hide()" mdbWavesEffect>Close</button>
+              <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close"
+                      (click)="basicModal.hide()" mdbWavesEffect>Close
+              </button>
             </div>
           </div>
         </div>

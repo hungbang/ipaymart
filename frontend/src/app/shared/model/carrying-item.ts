@@ -1,6 +1,6 @@
 export class CarryingItem {
 
   hashId: string;
-  status: number;
+  status: number; // order status
   orderId: number;
 }

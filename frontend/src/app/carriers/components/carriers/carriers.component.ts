@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {CarryingItem} from '../../../shared/model/carrying-item';
-import {CarrierStatus} from '../../../shared/model/carrier-status';
 import {ContractService} from '../../../shared/services/contract.service';
 import {Web3Service} from '../../../shared/services/web3.service';
+import {OrderStatus} from '../../../shared/model/sc-order';
 
 @Component({
   selector: 'app-carriers',
@@ -14,7 +14,7 @@ export class CarriersComponent implements OnInit {
 
 
   carryingItems: CarryingItem[] = [];
-  carrierStatus = CarrierStatus;
+  orderStatus = OrderStatus;
   currentAccount: any;
 
   constructor(private router: ActivatedRoute, private contractService: ContractService, private web3Service: Web3Service) {

@@ -17,6 +17,8 @@ export class OrdersComponent implements OnInit {
   orders: ScOrder[];
   scOrderStatus = OrderStatus;
   orderStatus: any;
+  contract: any;
+  referenceId: any;
   headElements = ['Buyer', 'Delivery', 'Status', 'Order Time', 'Action'];
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -26,9 +28,25 @@ export class OrdersComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    this.contract = this.contractService.getContract();
     const data = this.activatedRoute.snapshot.data;
     this.currentAccount = data.currentAccount;
     this.loadOrders();
+
+    // watch ReceivedItemEvent
+    this.contract.ReceivedItemEvent().watch((error: any, result: any) => {
+      if (error) {
+        this.changeDetectorRef.markForCheck();
+        alert('Cannot create your item.');
+
+      }
+      if (result) {
+        if (this.referenceId === result.args.hashId) {
+          alert('Received Order Success.');
+        }
+      }
+    });
   }
 
   private loadOrders() {
@@ -60,4 +78,10 @@ export class OrdersComponent implements OnInit {
     this.orderStatus = this.scOrderStatus.toOrderStatus(order.orderStatus);
   }
 
+
+  onReceive(itemHashId: any): void {
+    // TODO: we need to listen ReceivedItemEvent to know whether the transaction is success or not
+    this.referenceId = itemHashId;
+    this.contractService.receiveItem(this.currentAccount, itemHashId);
+  }
 }

@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnInit} from '@angular/core';
 import {ContractService} from '../../../shared/services/contract.service';
 import {forkJoin, of} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -28,6 +28,7 @@ export class HomeComponent implements OnInit {
               private httpErrorHandler: HttpErrorHandler,
               private activatedRoute: ActivatedRoute,
               private route: Router,
+              private ngZone: NgZone,
               private ipfsRestClient: IpfsRestClient) {
     this.handleError = httpErrorHandler.createHandleError('IpfsRestClient');
 
@@ -62,7 +63,7 @@ export class HomeComponent implements OnInit {
       ))
     ).subscribe(values => {
       this.items = values.filter(val => val !== null);
-      this.changeDetectorRef.markForCheck();
+      this.ngZone.run(() => this.changeDetectorRef.markForCheck());
     });
   }
 
