@@ -44,7 +44,7 @@ export class HomeComponent implements OnInit {
   private loadItemFromIPFS() {
     // [HBQ] to intercept too much request to ipfs server. to avoid `HttpStatus 429 - Too many request` for demo purpose
     const availableItem = this.scItems.filter(val => val.status === 1);
-    const latest = availableItem.slice(availableItem.length - 10, availableItem.length - 1);
+    const latest = availableItem.length > 10 ? availableItem.slice(availableItem.length - 10, availableItem.length - 1) : availableItem;
     /**
      * @link{https://www.learnrxjs.io/operators/combination/forkjoin.html}
      * Be aware that if any of the inner observables supplied to forkJoin error you will lose

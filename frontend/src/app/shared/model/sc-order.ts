@@ -30,7 +30,7 @@ export namespace OrderStatus {
       case 2:
         return 'Your item is delivered to buyer.';
       case 3:
-        return 'Unavailable for sell.';
+        return 'Your Item is sold';
       case 4:
         return 'Buyer has been cancelled.';
       default:

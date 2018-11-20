@@ -16,7 +16,7 @@ export class ItemDetailVO {
   seller: any;
   contactDetail: any;
   delivery: any;
-  orderStatus: any;
+  orderStatus: number;
 }
 
 
@@ -108,6 +108,7 @@ export class SellItemsComponent implements OnInit {
     this.contractService.listOrders(hashId).subscribe(data => {
       const lastOrder = data.orders.length - 1;
       if (lastOrder >= 0) {
+        console.log(data.orders[lastOrder].orderStatus);
         this.itemDetail = {
           receiver: data.orders[lastOrder].buyer,
           seller: data.seller,
@@ -115,7 +116,7 @@ export class SellItemsComponent implements OnInit {
           delivery: data.orders.currentAccount,
           orderStatus: data.orders[lastOrder].orderStatus
         };
-        this.changeDetectorRef.markForCheck();
+        this.ngZone.run(() => this.changeDetectorRef.markForCheck());
       } else {
         this.itemDetail = {
           receiver: 'None',
@@ -124,7 +125,7 @@ export class SellItemsComponent implements OnInit {
           delivery: 'None',
           orderStatus: null
         };
-        this.changeDetectorRef.markForCheck();
+        this.ngZone.run(() => this.changeDetectorRef.markForCheck());
       }
     });
   }
@@ -155,7 +156,7 @@ export class SellItemsComponent implements OnInit {
       ))
     ).subscribe(value => {
       this.carrierOptions = [...this.carrierOptions, ...value];
-      this.changeDetectorRef.markForCheck();
+      this.ngZone.run(() => this.changeDetectorRef.markForCheck());
     });
   }
 }

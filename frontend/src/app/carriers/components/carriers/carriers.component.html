@@ -15,7 +15,10 @@
       <td>{{item.hashId}}</td>
       <td>{{orderStatus.toOrderStatus(item.status)}}</td>
       <td>
-        <button mdbBtn type="button" gradient="purple" rounded="true" mdbWavesEffect (click)="onDelivered(item.hashId)">Delivered</button>
+        <button *ngIf="item.status === 1; else another" mdbBtn type="button" gradient="purple" rounded="true" mdbWavesEffect (click)="onDelivered(item.hashId)">Delivered</button>
+        <ng-template #another>
+          <span>No Action</span>
+        </ng-template>
       </td>
     </tr>
 

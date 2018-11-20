@@ -15,12 +15,14 @@
     <tbody class="text-center">
     <tr mdbTableCol *ngFor="let el of scItems">
       <th scope="row" class="text-left">{{el.hashId}}</th>
-      <td class="font-weight-bold">{{contractService.toEther(el.price)}}</td>
+      <td class="font-weight-bold">{{contractService.toEther(el.price)}} <span class="font-italic font-weight-light text-danger">eth</span></td>
       <td class="amber-text">{{scItemStatus.toStatus(el.status)}}</td>
       <td>
-        <button mdbBtn color="primary" outline="true" size="sm" type="button" class="m-0"
+
+        <button  mdbBtn color="primary" outline="true" size="sm" type="button" class="m-0"
                 (click)="basicModal.show()" mdbWavesEffect>View Detail
         </button>
+
         <div mdbModal #basicModal="mdbModal" (open)="onOpen(el.hashId)" class="modal fade" tabindex="-1" role="dialog"
              aria-labelledby="myBasicModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
@@ -44,7 +46,7 @@
                 <div class="row mb-4">
                   <span class="fa fa-address-card"> <span class="font-weight-bold text-uppercase"> Seller:</span>  {{itemDetail?.seller}}</span>
                 </div>
-                <div class="row mb-4" *ngIf="itemDetail.orderStatus && itemDetail.orderStatus === '0'">
+                <div class="row mb-4" *ngIf="itemDetail.orderStatus === 0">
                   <div class="col-md-4 col-sm-6 col-xs-12  pl-0 pr-0 text-left">
                     <span class="fa fa-address-card font-weight-bold text-uppercase"> Carriers</span>
                   </div>
@@ -61,7 +63,7 @@
                 <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close"
                         (click)="basicModal.hide()" mdbWavesEffect>Close
                 </button>
-                <button *ngIf="itemDetail.orderStatus && itemDetail.orderStatus === '0'" type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect (click)="saveDelivery(el.hashId)">Save changes
+                <button *ngIf="itemDetail.orderStatus === 0" type="button" mdbBtn color="primary" class="relative waves-light" mdbWavesEffect (click)="saveDelivery(el.hashId)">Save changes
                 </button>
               </div>
             </div>
