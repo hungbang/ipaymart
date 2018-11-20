@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
+
 declare const window: any;
 
 @Injectable()
@@ -7,6 +8,15 @@ export class Web3Service {
 
   constructor() {
   }
+
+  toWei(ether: number) {
+    return window.web3.toWei(ether, 'ether');
+  }
+
+  toEther(wei: number) {
+    return wei / 1000000000000000000;
+  }
+
 
   getSelectedAccount(): Observable<any> {
     return Observable.create((ob: any) => {
@@ -16,6 +26,18 @@ export class Web3Service {
         }
         ob.next(accounts[0]);
         ob.complete();
+      });
+    });
+  }
+
+  getBalanceByAccount(account: any): Observable<any> {
+    return Observable.create(observer => {
+      window.web3.eth.getBalance(account, (err, balance) => {
+        if (err) {
+          observer.error(err);
+        }
+        observer.next(this.toEther(balance));
+        observer.complete();
       });
     });
   }

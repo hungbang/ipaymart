@@ -24,7 +24,8 @@
           <a [routerLink]="['/carriers/new']" class="nav-link waves-light" mdbWavesEffect>Register Carrier</a>
         </li>
         <li class="nav-item">
-          <a [routerLink]="['/carriers/account/' + currentAccount]" class="nav-link waves-light" mdbWavesEffect>In Transit Items</a>
+          <a [routerLink]="['/carriers/account/' + currentAccount]" class="nav-link waves-light" mdbWavesEffect>In
+            Transit Items</a>
         </li>
 
         <li class="nav-item">
@@ -40,6 +41,10 @@
         <li class="nav-item">
           <a href="about-us" class="nav-link waves-light" mdbWavesEffect>About Us</a>
         </li>
+        <li class="nav-item border-left pl-3 pt-md-2">
+          <span class="waves-light">Current Balance:  <span class="fa fa-ethereum text-danger"> {{balance}}</span></span>
+        </li>
+
 
       </ul>
       <!-- Links -->
