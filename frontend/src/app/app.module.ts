@@ -3,7 +3,6 @@ import {APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA} fro
 
 import {AppComponent} from './app.component';
 import {ROUTING} from './app.routing';
-import {NavigationBarComponent} from './navigation-bar/components/navigation-bar.component';
 import {SharedModule} from './shared/shared.module';
 import {ReactiveFormsModule} from '@angular/forms';
 import {initIPFS, IPFS} from './ipfs';
@@ -12,8 +11,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    NavigationBarComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,

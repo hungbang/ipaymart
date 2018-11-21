@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "start": "ng serve --aot --disable-host-check",
+    "build": "ng build --prod --deploy-url=static && gulp",
+    "gitbuild": "ng build --prod --deploy-url=ipaymart/static/ && gulp --base-href ",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -60,6 +61,8 @@
     "@types/node": "~8.9.4",
     "@types/uuid": "^3.4.4",
     "codelyzer": "~4.5.0",
+    "del": "3.0.0",
+    "gulp": "4.0.0",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~3.0.0",

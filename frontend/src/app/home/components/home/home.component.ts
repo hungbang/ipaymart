@@ -8,6 +8,7 @@ import {catchError, mergeMap, tap} from 'rxjs/operators';
 import {ItemDetailComponent} from '../../../items/components/item-detail/item-detail.component';
 import {ScItem} from '../../../shared/model/sc-item';
 import {HandleError, HttpErrorHandler} from '../../../shared/services/http-error-handler';
+import {Objects} from '../../../shared/utils/objects-util';
 
 @Component({
   selector: 'app-home',
@@ -62,8 +63,12 @@ export class HomeComponent implements OnInit {
         })
       ))
     ).subscribe(values => {
-      this.items = values.filter(val => val !== null);
-      this.ngZone.run(() => this.changeDetectorRef.markForCheck());
+
+      // this.addParams(this.items);
+      this.ngZone.run(() => {
+        this.items = values.filter(val => val !== null);
+        this.changeDetectorRef.markForCheck();
+      });
     });
   }
 
@@ -78,5 +83,13 @@ export class HomeComponent implements OnInit {
       return (images[0] === undefined && images[0] === null) ? this.imageDefault : images[0];
 
     }
+  }
+
+  addParams(items: Item[]): void {
+    const urlTree = this.route.createUrlTree([], {
+      queryParams: {q: Objects.toBase64(items)}
+    });
+
+    this.route.navigateByUrl(urlTree);
   }
 }

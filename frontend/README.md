@@ -69,5 +69,18 @@ Published to QmbHpf6y6hVQ3wzk3A5rV4cPhtJNbai69hsLU8ssbPdcCc: /ipfs/QmTSBEi5BXtCZ
 
 ## Latest deploy hash :
 
-`Published to Qmf53cHS9HWP2pJK8gkf66iP4srM9qhXkG5FCh3ZYFUV1i: /ipfs/QmSw2HTJuTVKx3gMAzFipu9Lkhk66pqxSGzjdNRWbUPD1S
-`
+```
+ipfs name publish QmaSTrtwpzPXGPizqRGcqpT5zfeL1jGrr82rJ9SCeEg8CW
+   Published to Qmf53cHS9HWP2pJK8gkf66iP4srM9qhXkG5FCh3ZYFUV1i: /ipfs/QmaSTrtwpzPXGPizqRGcqpT5zfeL1jGrr82rJ9SCeEg8CW
+
+```
+
+## Build github : 
+```
+    "gitbuild": "ng build --prod --deploy-url=ipaymart/static/ && gulp --base-href ", // insert similar link at the end of line: https://hungbang.github.io/ipaymart
+
+```
+
+```
+Link for test : https://hungbang.github.io/ipaymart
+```

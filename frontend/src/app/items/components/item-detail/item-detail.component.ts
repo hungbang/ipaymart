@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, NgZone, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, NgZone, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Item} from '../../../shared/model/item';
 import {ImagesUtil} from '../../../shared/utils/images-util';
@@ -13,7 +13,7 @@ import {LoadingBarService} from '@ngx-loading-bar/core';
   styleUrls: ['./item-detail.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ItemDetailComponent implements OnInit {
+export class ItemDetailComponent implements OnInit, OnDestroy {
   static ITEM_DETAIL = 'items';
   contract: any;
 
@@ -81,5 +81,12 @@ export class ItemDetailComponent implements OnInit {
     this.referenceHashId = this.item.hashId;
     this.loadingBar.start();
     this.contractService.orderItem(this.selectedAccount, this.item.hashId, data.contactDetail, this.item.price);
+  }
+
+  ngOnDestroy(): void {
+    this.ngZone.run(() => {
+        this.loadingBar.complete();
+      }
+    );
   }
 }

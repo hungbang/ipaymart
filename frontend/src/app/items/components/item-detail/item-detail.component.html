@@ -45,7 +45,7 @@
       </div>
     </form>
     <div class="row item-action">
-      <button [hidden]="this.item.ownerMetaMaskAddress === this.selectedAccount" (click)="buyIt();" mdbBtn type="button" gradient="peach" rounded="true" mdbWavesEffect>
+      <button [hidden]="!this.canNotBuy" (click)="buyIt();" mdbBtn type="button" gradient="peach" rounded="true" mdbWavesEffect>
         <span class="fa fa-buysellads">   Buy It</span>
       </button>
     </div>

@@ -10,7 +10,7 @@ import {
   WavesModule
 } from 'angular-bootstrap-md';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {FileSelectDirective} from 'ng2-file-upload';
+import {FileSelectDirective, FileUploadModule} from 'ng2-file-upload';
 import {ContractService} from './services/contract.service';
 import {Web3Service} from './services/web3.service';
 import {HttpClientModule} from '@angular/common/http';
@@ -55,14 +55,15 @@ import { LoadingBarModule } from '@ngx-loading-bar/core';
     CommonModule,
     MatStepperModule,
     LoadingBarModule.forRoot(),
-    MatProgressBarModule
+    MatProgressBarModule,
+    FileUploadModule
   ],
   declarations: [
     // Components
     //  Modals
 
     // Directives
-    FileSelectDirective
+    // FileSelectDirective
 
   ],
   exports: [
@@ -84,10 +85,11 @@ import { LoadingBarModule } from '@ngx-loading-bar/core';
     MatStepperModule,
     LoadingBarModule,
     MatProgressBarModule,
+    FileUploadModule
     // Components
 
     // Directives
-    FileSelectDirective
+    // FileSelectDirective
     // Pipes
 
   ],
