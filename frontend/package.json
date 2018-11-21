@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --aot --disable-host-check",
-    "build": "ng build --prod --deploy-url=static && gulp",
+    "build": "ng build --prod --deploy-url=ipaymart/static/ && gulp --base-href",
     "gitbuild": "ng build --prod --deploy-url=ipaymart/static/ && gulp --base-href ",
     "test": "ng test",
     "lint": "ng lint",
