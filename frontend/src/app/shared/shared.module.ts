@@ -21,11 +21,13 @@ import {ItemDetailResolver} from './resolvers/ItemDetailResolver';
 import {MetaMaskAccountResolver} from './resolvers/MetaMaskAccountResolver';
 import {NgSelectModule} from '@ng-select/ng-select';
 import {CommonModule} from '@angular/common';
-import {MatStepperModule} from '@angular/material';
+import {MatProgressBarModule, MatStepperModule} from '@angular/material';
 import {HttpErrorHandler} from './services/http-error-handler';
 import {MySellItemsResolver} from './resolvers/my-sell-items-resolver';
 import {DeliveriesResolver} from './resolvers/DeliveriesResolver';
 import {IpfsService} from './services/ipfs.service';
+import { LoadingBarModule } from '@ngx-loading-bar/core';
+
 
 
 /**
@@ -51,7 +53,9 @@ import {IpfsService} from './services/ipfs.service';
     ModalModule.forRoot(),
     NgSelectModule,
     CommonModule,
-    MatStepperModule
+    MatStepperModule,
+    LoadingBarModule.forRoot(),
+    MatProgressBarModule
   ],
   declarations: [
     // Components
@@ -78,6 +82,8 @@ import {IpfsService} from './services/ipfs.service';
     NgSelectModule,
     CommonModule,
     MatStepperModule,
+    LoadingBarModule,
+    MatProgressBarModule,
     // Components
 
     // Directives

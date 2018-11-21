@@ -24,10 +24,11 @@ export class IpfsRestClient {
   }
 
   getFile(hashId: string): Observable<any> {
+    console.log('hashId====================', hashId);
     const domain = `https://gateway.ipfs.io/ipfs/${hashId}`;
     return this.http.get(domain)
       .pipe(
-        timeout(40000),
+        timeout(10000),
         tap(data => console.log('server data:', data)),
         catchError(this.handleError('getData'))
       );

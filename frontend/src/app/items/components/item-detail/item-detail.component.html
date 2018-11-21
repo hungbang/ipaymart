@@ -1,5 +1,8 @@
 <div class="container">
-    <div class="row item-detail">
+  <!-- hide/show progress bar when create item-->
+  <ngx-loading-bar [color]="'purple'" [height]="'4px'"></ngx-loading-bar>
+
+  <div class="row item-detail">
       <div class="col-md-6 col-sm-6 col-xs-6">
         <!--Carousel Wrapper-->
         <mdb-carousel [isControls]="true" [animation]="'slide'">
@@ -42,7 +45,7 @@
       </div>
     </form>
     <div class="row item-action">
-      <button (click)="buyIt();" mdbBtn type="button" gradient="peach" rounded="true" mdbWavesEffect>
+      <button [hidden]="this.item.ownerMetaMaskAddress === this.selectedAccount" (click)="buyIt();" mdbBtn type="button" gradient="peach" rounded="true" mdbWavesEffect>
         <span class="fa fa-buysellads">   Buy It</span>
       </button>
     </div>

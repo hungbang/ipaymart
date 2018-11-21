@@ -1,4 +1,6 @@
 <div class="container">
+  <!-- hide/show progress bar when create item-->
+  <ngx-loading-bar [color]="'purple'" [height]="'4px'"></ngx-loading-bar>
 
   <div class="row light-green-text mb-3 ml-1 text-uppercase">
     <h3>sell items</h3>
@@ -17,6 +19,7 @@
       <th scope="row" class="text-left">{{el.hashId}}</th>
       <td class="font-weight-bold">{{contractService.toEther(el.price)}} <span class="font-italic font-weight-light text-danger">eth</span></td>
       <td class="amber-text">{{scItemStatus.toStatus(el.status)}}</td>
+      <td scope="row">{{dateTimeUtil.toDate(el.createdAt) | date: 'medium'}}</td>
       <td>
 
         <button  mdbBtn color="primary" outline="true" size="sm" type="button" class="m-0"

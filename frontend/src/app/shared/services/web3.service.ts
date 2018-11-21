@@ -13,7 +13,7 @@ export class Web3Service {
     return window.web3.toWei(ether, 'ether');
   }
 
-  toEther(wei: number): number {
+  toEther(wei: number): any {
     const eth = wei / 1000000000000000000;
     return eth.toPrecision(6);
   }

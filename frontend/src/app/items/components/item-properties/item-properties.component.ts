@@ -7,6 +7,7 @@ import {Web3Service} from '../../../shared/services/web3.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {NgxSpinnerService} from 'ngx-spinner';
 import {Item} from '../../../shared/model/item';
+import {LoadingBarService} from '@ngx-loading-bar/core';
 
 @Component({
   selector: 'app-item-properties',
@@ -33,8 +34,9 @@ export class ItemPropertiesComponent implements OnInit {
               private contractService: ContractService,
               private web3Service: Web3Service,
               private activatedRoute: ActivatedRoute,
-              private router: Router,
+              private route: Router,
               private spinner: NgxSpinnerService,
+              private loadingBar: LoadingBarService,
               private changeDetectorRef: ChangeDetectorRef,
               private ngZone: NgZone) {
   }
@@ -66,7 +68,12 @@ export class ItemPropertiesComponent implements OnInit {
       }
       if (result) {
         if (this.referenceHashId === result.args.hashId) {
-          alert('Success');
+          this.ngZone.run(() => {
+            console.log('Success');
+            this.loadingBar.complete();
+            this.route.navigate([`sell-items/account/${this.selectedAccount}`]);
+
+          });
         }
       }
     });
@@ -93,8 +100,11 @@ export class ItemPropertiesComponent implements OnInit {
     }
     const data: Item = this.itemForm.getRawValue();
     data.images = this.imageFiles;
+    data.ownerMetaMaskAddress = this.selectedAccount;
+    console.log(data);
     const filesAdded = await this.ipfs.files.add(new this.ipfs.types.Buffer(JSON.stringify(data)));
     this.referenceHashId = filesAdded[0].hash;
+    this.loadingBar.start();
     this.changeDetectorRef.markForCheck();
     this.contractService.addItem(this.selectedAccount, filesAdded[0].hash, data.price);
 

@@ -10,6 +10,8 @@ import {OrderStatus} from '../../../shared/model/sc-order';
 import {IpfsService} from '../../../shared/services/ipfs.service';
 import {IPFS} from '../../../ipfs';
 import {Web3Service} from '../../../shared/services/web3.service';
+import {DateTimeUtil} from '../../../shared/utils/date-time-util';
+import {LoadingBarService} from '@ngx-loading-bar/core';
 
 export class ItemDetailVO {
   receiver: any;
@@ -39,7 +41,8 @@ export class SellItemsComponent implements OnInit {
   contactDetail: any;
   itemDetail: ItemDetailVO = new ItemDetailVO();
   carrierOptions: CarrierOption[] = [];
-  headElements = ['Item Hash', 'Price', 'Status', 'Action'];
+  dateTimeUtil = DateTimeUtil;
+  headElements = ['Item Hash', 'Price', 'Status', 'Created At', 'Action'];
   carriers: Carrier[] = [
     {
       hashId: 'QmdwbN4HypYhHwXZpjyLqEJsy38PK1tqDnPj2k2VLadBQr',
@@ -56,6 +59,7 @@ export class SellItemsComponent implements OnInit {
               private changeDetectorRef: ChangeDetectorRef,
               private ipfsService: IpfsService,
               private ngZone: NgZone,
+              private loadingBar: LoadingBarService,
               private web3Service: Web3Service,
               public contractService: ContractService) {
 
@@ -78,7 +82,9 @@ export class SellItemsComponent implements OnInit {
     this.contract.ItemSentEvent().watch((err: any, result: any) => {
       console.log(result);
       if (result.args.hashId === this.referenceId) {
-        alert('Success');
+        this.ngZone.run(() => {
+          this.loadingBar.complete();
+        });
       }
     });
   }
@@ -138,6 +144,7 @@ export class SellItemsComponent implements OnInit {
     const carrier = this.carriers.filter(val => val.hashId === this.selectedCarrier)[0];
     // TODO: we need to watch ItemSentEvent to confirm whether transaction success or not.
     this.referenceId = hashId;
+    this.loadingBar.start();
     this.contractService.sendItem(this.currentAccount, hashId, carrier.address);
   }
 

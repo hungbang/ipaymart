@@ -5,6 +5,8 @@ import {map, mergeMap} from 'rxjs/operators';
 import {forkJoin} from 'rxjs';
 import {OrderStatus, ScOrder} from '../../../shared/model/sc-order';
 import {DateTime} from 'luxon';
+import {LoadingBarService} from '@ngx-loading-bar/core';
+import {DateTimeUtil} from '../../../shared/utils/date-time-util';
 
 @Component({
   selector: 'app-orders',
@@ -19,11 +21,13 @@ export class OrdersComponent implements OnInit {
   orderStatus: any;
   contract: any;
   referenceId: any;
+  dateTimeUtil = DateTimeUtil;
   headElements = ['Buyer', 'Delivery', 'Status', 'Order Time', 'Action'];
 
   constructor(private activatedRoute: ActivatedRoute,
               public contractService: ContractService,
               private ngZone: NgZone,
+              private loadingBar: LoadingBarService,
               private changeDetectorRef: ChangeDetectorRef) {
   }
 
@@ -37,13 +41,14 @@ export class OrdersComponent implements OnInit {
     // watch ReceivedItemEvent
     this.contract.ReceivedItemEvent().watch((error: any, result: any) => {
       if (error) {
-        this.changeDetectorRef.markForCheck();
-        alert('Cannot create your item.');
+        this.ngZone.run(() =>  this.loadingBar.complete());
+        console.log('Error.');
 
       }
       if (result) {
         if (this.referenceId === result.args.hashId) {
-          alert('Received Order Success.');
+          this.ngZone.run(() =>  this.loadingBar.complete());
+          console.log('Received Order Success.');
         }
       }
     });
@@ -82,6 +87,7 @@ export class OrdersComponent implements OnInit {
   onReceive(itemHashId: any): void {
     // TODO: we need to listen ReceivedItemEvent to know whether the transaction is success or not
     this.referenceId = itemHashId;
+    this.loadingBar.start();
     this.contractService.receiveItem(this.currentAccount, itemHashId);
   }
 }
