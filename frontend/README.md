@@ -67,3 +67,7 @@ Published to QmbHpf6y6hVQ3wzk3A5rV4cPhtJNbai69hsLU8ssbPdcCc: /ipfs/QmTSBEi5BXtCZ
 * [Resize image lib](https://alligator.io/angular/resizing-images-in-browser-ng2-img-max/)
 
 
+## Latest deploy hash :
+
+`Published to Qmf53cHS9HWP2pJK8gkf66iP4srM9qhXkG5FCh3ZYFUV1i: /ipfs/QmSw2HTJuTVKx3gMAzFipu9Lkhk66pqxSGzjdNRWbUPD1S
+`
