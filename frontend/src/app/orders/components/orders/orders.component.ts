@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnInit, ViewContainerRef} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ContractService} from '../../../shared/services/contract.service';
 import {map, mergeMap} from 'rxjs/operators';
@@ -7,6 +7,7 @@ import {OrderStatus, ScOrder} from '../../../shared/model/sc-order';
 import {DateTime} from 'luxon';
 import {LoadingBarService} from '@ngx-loading-bar/core';
 import {DateTimeUtil} from '../../../shared/utils/date-time-util';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-orders',
@@ -28,6 +29,7 @@ export class OrdersComponent implements OnInit {
               public contractService: ContractService,
               private ngZone: NgZone,
               private loadingBar: LoadingBarService,
+              public toastr: ToastrService,
               private changeDetectorRef: ChangeDetectorRef) {
   }
 
@@ -41,14 +43,19 @@ export class OrdersComponent implements OnInit {
     // watch ReceivedItemEvent
     this.contract.ReceivedItemEvent().watch((error: any, result: any) => {
       if (error) {
-        this.ngZone.run(() =>  this.loadingBar.complete());
+        this.ngZone.run(() =>  {
+          this.loadingBar.complete();
+          this.toastr.error('Error occurs when receive order.', 'Oops');
+        });
         console.log('Error.');
 
       }
       if (result) {
         if (this.referenceId === result.args.hashId) {
-          this.ngZone.run(() =>  this.loadingBar.complete());
-          console.log('Received Order Success.');
+          this.ngZone.run(() =>  {
+            this.loadingBar.complete();
+            this.toastr.success('The Order has been received', 'Success');
+          });
         }
       }
     });

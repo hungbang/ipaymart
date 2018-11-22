@@ -27,6 +27,8 @@ import {MySellItemsResolver} from './resolvers/my-sell-items-resolver';
 import {DeliveriesResolver} from './resolvers/DeliveriesResolver';
 import {IpfsService} from './services/ipfs.service';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
+import { ToastrModule } from 'ngx-toastr';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 
 
@@ -56,7 +58,9 @@ import { LoadingBarModule } from '@ngx-loading-bar/core';
     MatStepperModule,
     LoadingBarModule.forRoot(),
     MatProgressBarModule,
-    FileUploadModule
+    FileUploadModule,
+    // BrowserAnimationsModule,
+    ToastrModule.forRoot()
   ],
   declarations: [
     // Components
@@ -85,7 +89,9 @@ import { LoadingBarModule } from '@ngx-loading-bar/core';
     MatStepperModule,
     LoadingBarModule,
     MatProgressBarModule,
-    FileUploadModule
+    FileUploadModule,
+    // BrowserAnimationsModule,
+    ToastrModule,
     // Components
 
     // Directives

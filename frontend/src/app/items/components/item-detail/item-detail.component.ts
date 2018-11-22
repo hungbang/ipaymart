@@ -6,6 +6,7 @@ import {ContractService} from '../../../shared/services/contract.service';
 import {Web3Service} from '../../../shared/services/web3.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {LoadingBarService} from '@ngx-loading-bar/core';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-item-detail',
@@ -32,10 +33,12 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
   constructor(private activatedRoute: ActivatedRoute,
               private contractService: ContractService,
               private web3Service: Web3Service,
+              public toastr: ToastrService,
               private ngZone: NgZone,
               private route: Router,
               private changeDetectorRef: ChangeDetectorRef,
               private loadingBar: LoadingBarService) {
+
   }
 
   ngOnInit() {
@@ -56,8 +59,10 @@ export class ItemDetailComponent implements OnInit, OnDestroy {
     // watch NewItemEvent
     this.contract.NewOrderEvent().watch((error: any, result: any) => {
       if (error) {
-        alert('Cannot create your item.');
-
+        this.ngZone.run(() => {
+          this.loadingBar.complete();
+          this.toastr.error(`Can not buy item at this time ${error}`, 'Oops');
+        });
       }
       if (result) {
         if (this.referenceHashId === result.args.hashId) {

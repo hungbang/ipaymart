@@ -70,8 +70,9 @@ Published to QmbHpf6y6hVQ3wzk3A5rV4cPhtJNbai69hsLU8ssbPdcCc: /ipfs/QmTSBEi5BXtCZ
 ## Latest deploy hash :
 
 ```
-ipfs name publish QmNwBKx92NpVZKypzHd57ARpBcm8F5JkqsHdepv2cLW9Me
-Published to Qmf53cHS9HWP2pJK8gkf66iP4srM9qhXkG5FCh3ZYFUV1i: /ipfs/QmNwBKx92NpVZKypzHd57ARpBcm8F5JkqsHdepv2cLW9Me
+ ipfs name publish QmcCudRLv2GnqXxCX3uLPeYbPFygWGmM5Ki4MzAZCSVjT2
+Published to Qmf53cHS9HWP2pJK8gkf66iP4srM9qhXkG5FCh3ZYFUV1i: /ipfs/QmcCudRLv2GnqXxCX3uLPeYbPFygWGmM5Ki4MzAZCSVjT2
+
 
 
 ```

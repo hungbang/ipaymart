@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, NgZone, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, NgZone, OnInit, ViewContainerRef} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ContractService} from '../../../shared/services/contract.service';
 import {forkJoin, from, of} from 'rxjs';
@@ -12,6 +12,7 @@ import {IPFS} from '../../../ipfs';
 import {Web3Service} from '../../../shared/services/web3.service';
 import {DateTimeUtil} from '../../../shared/utils/date-time-util';
 import {LoadingBarService} from '@ngx-loading-bar/core';
+import {ToastrService} from 'ngx-toastr';
 
 export class ItemDetailVO {
   receiver: any;
@@ -59,6 +60,7 @@ export class SellItemsComponent implements OnInit {
               private changeDetectorRef: ChangeDetectorRef,
               private ipfsService: IpfsService,
               private ngZone: NgZone,
+              public toastr: ToastrService,
               private loadingBar: LoadingBarService,
               private web3Service: Web3Service,
               public contractService: ContractService) {
@@ -80,10 +82,17 @@ export class SellItemsComponent implements OnInit {
     });
 
     this.contract.ItemSentEvent().watch((err: any, result: any) => {
+      if (err) {
+        this.ngZone.run(() => {
+          this.loadingBar.complete();
+          this.toastr.error('Error occurs when delivery your item', 'Oops');
+        });
+      }
       console.log(result);
       if (result.args.hashId === this.referenceId) {
         this.ngZone.run(() => {
           this.loadingBar.complete();
+          this.toastr.success('The item has been shipped.', 'Success');
         });
       }
     });
