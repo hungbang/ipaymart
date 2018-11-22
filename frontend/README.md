@@ -87,3 +87,8 @@ Published to QmbHpf6y6hVQ3wzk3A5rV4cPhtJNbai69hsLU8ssbPdcCc: /ipfs/QmTSBEi5BXtCZ
 Link for testing with github: https://hungbang.github.io/ipaymart
 Link for testing with ipfs and domain : https://ipfs.io/ipns/demo.etz.trade/#/home
 ```
+
+
+## Reference link 
+
+[How to add site to ipfs and ipns](https://medium.com/coinmonks/how-to-add-site-to-ipfs-and-ipns-f121b4cfc8ee)
