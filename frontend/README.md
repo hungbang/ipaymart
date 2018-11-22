@@ -84,5 +84,6 @@ Published to QmbHpf6y6hVQ3wzk3A5rV4cPhtJNbai69hsLU8ssbPdcCc: /ipfs/QmTSBEi5BXtCZ
 ```
 
 ```
-Link for test : https://hungbang.github.io/ipaymart
+Link for testing with github: https://hungbang.github.io/ipaymart
+Link for testing with ipfs and domain : https://ipfs.io/ipns/demo.etz.trade/#/home
 ```
