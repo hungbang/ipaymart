@@ -1,14 +1,15 @@
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, NgZone, OnInit} from '@angular/core';
 import {ContractService} from '../../../shared/services/contract.service';
-import {forkJoin, of} from 'rxjs';
+import {forkJoin, from, of} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {IpfsRestClient} from '../../../shared/services/ipfs-rest-client';
 import {Item} from '../../../shared/model/item';
-import {catchError, mergeMap, tap} from 'rxjs/operators';
+import {map, mergeMap, tap} from 'rxjs/operators';
 import {ItemDetailComponent} from '../../../items/components/item-detail/item-detail.component';
 import {ScItem} from '../../../shared/model/sc-item';
 import {HandleError, HttpErrorHandler} from '../../../shared/services/http-error-handler';
 import {Objects} from '../../../shared/utils/objects-util';
+import {IPFS} from '../../../ipfs';
 
 @Component({
   selector: 'app-home',
@@ -28,6 +29,7 @@ export class HomeComponent implements OnInit {
               private changeDetectorRef: ChangeDetectorRef,
               private httpErrorHandler: HttpErrorHandler,
               private activatedRoute: ActivatedRoute,
+              @Inject(IPFS) private ipfs,
               private route: Router,
               private ngZone: NgZone,
               private ipfsRestClient: IpfsRestClient) {
@@ -56,14 +58,13 @@ export class HomeComponent implements OnInit {
     of(latest).pipe(
       mergeMap(items => forkJoin(
         items.map(item => {
-          return this.ipfsRestClient.getFile(item.hashId).pipe(
-            tap(value => value.hashId = item.hashId),
-            catchError(this.handleError('getFile', null))
+          return from(this.ipfs.files.cat(item.hashId)).pipe(
+            map(val => JSON.parse(val.toString())),
+            tap(val => val.hashId = item.hashId)
           );
         })
       ))
     ).subscribe(values => {
-
       // this.addParams(this.items);
       this.ngZone.run(() => {
         this.items = values.filter(val => val !== null);
@@ -77,7 +78,7 @@ export class HomeComponent implements OnInit {
   }
 
   toImageDefault(images: any[]): any {
-    if (images.length === 0) {
+    if (images === undefined || images.length === 0) {
       return this.imageDefault;
     } else {
       return (images[0] === undefined && images[0] === null) ? this.imageDefault : images[0];

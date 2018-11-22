@@ -34,5 +34,9 @@ export class IpfsService {
   //   });
   // }
 
+  // public async getFile(hash: any): any {
+  //   return await this.ipfs.files.cat(hash);
+  // }
+
 
 }

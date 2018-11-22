@@ -16,7 +16,7 @@
     </thead>
     <tbody class="text-center">
     <tr mdbTableCol *ngFor="let el of scItems">
-      <th scope="row" class="text-left">{{el.hashId}}</th>
+      <th scope="row" class="text-left"> <a [href]="toDetailData(el.hashId)" >{{el.hashId}}</a> </th>
       <td class="font-weight-bold">{{contractService.toEther(el.price)}} <span class="font-italic font-weight-light text-danger">eth</span></td>
       <td class="amber-text">{{scItemStatus.toStatus(el.status)}}</td>
       <td scope="row">{{dateTimeUtil.toDate(el.createdAt) | date: 'medium'}}</td>

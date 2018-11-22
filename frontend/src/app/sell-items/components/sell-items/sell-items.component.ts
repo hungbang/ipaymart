@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, NgZone, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ContractService} from '../../../shared/services/contract.service';
-import {forkJoin, from, Observable, of} from 'rxjs';
+import {forkJoin, from, of} from 'rxjs';
 import {map, mergeMap, tap} from 'rxjs/operators';
 import {ScItem, ScItemStatus} from '../../../shared/model/sc-item';
 import {Carrier} from '../../../shared/model/carrier';
@@ -77,7 +77,7 @@ export class SellItemsComponent implements OnInit {
 
     this.web3Service.getSelectedAccount().subscribe(account => {
       this.currentAccount = account;
-    })
+    });
 
     this.contract.ItemSentEvent().watch((err: any, result: any) => {
       console.log(result);
@@ -165,5 +165,9 @@ export class SellItemsComponent implements OnInit {
       this.carrierOptions = [...this.carrierOptions, ...value];
       this.ngZone.run(() => this.changeDetectorRef.markForCheck());
     });
+  }
+
+  toDetailData(hashId: string): any {
+    return `https://gateway.ipfs.io/ipfs/${hashId}`;
   }
 }
