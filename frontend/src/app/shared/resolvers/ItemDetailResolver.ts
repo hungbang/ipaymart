@@ -1,20 +1,23 @@
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
 import {Item} from '../model/item';
-import {Observable} from 'rxjs';
+import {from, Observable} from 'rxjs';
 import {IpfsRestClient} from '../services/ipfs-rest-client';
-import {Injectable} from '@angular/core';
-import {tap} from 'rxjs/operators';
+import {Inject, Injectable} from '@angular/core';
+import {map, tap} from 'rxjs/operators';
+import {IPFS} from '../../ipfs';
 
 @Injectable()
 export class ItemDetailResolver implements Resolve<Item> {
 
-  constructor(private ipfsRestClient: IpfsRestClient) {
+  constructor(private ipfsRestClient: IpfsRestClient, @Inject(IPFS) private ipfs,
+  ) {
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Item> | Promise<Item> | Item {
     const hashId = route.paramMap.get('id');
     if (hashId !== 'new') {
-      return this.ipfsRestClient.getFile(hashId).pipe(
+      return from(this.ipfs.files.cat(hashId)).pipe(
+        map(value => JSON.parse(value.toString())),
         tap(value => value.hashId = hashId)
       );
     }
