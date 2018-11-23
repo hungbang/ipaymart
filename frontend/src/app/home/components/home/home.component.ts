@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, NgZone, OnInit} from '@angular/core';
 import {ContractService} from '../../../shared/services/contract.service';
-import {forkJoin, from, of} from 'rxjs';
+import {forkJoin, of} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 import {IpfsRestClient} from '../../../shared/services/ipfs-rest-client';
 import {Item} from '../../../shared/model/item';
@@ -10,6 +10,7 @@ import {ScItem} from '../../../shared/model/sc-item';
 import {HandleError, HttpErrorHandler} from '../../../shared/services/http-error-handler';
 import {Objects} from '../../../shared/utils/objects-util';
 import {IPFS} from '../../../ipfs';
+import {IpfsService} from '../../../shared/services/ipfs.service';
 
 @Component({
   selector: 'app-home',
@@ -32,7 +33,7 @@ export class HomeComponent implements OnInit {
               @Inject(IPFS) private ipfs,
               private route: Router,
               private ngZone: NgZone,
-              private ipfsRestClient: IpfsRestClient) {
+              private ipfsService: IpfsService) {
     this.handleError = httpErrorHandler.createHandleError('IpfsRestClient');
 
   }
@@ -47,7 +48,7 @@ export class HomeComponent implements OnInit {
   private loadItemFromIPFS() {
     // [HBQ] to intercept too much request to ipfs server. to avoid `HttpStatus 429 - Too many request` for demo purpose
     const availableItem = this.scItems.filter(val => val.status === 1);
-    const latest = availableItem.length > 10 ? availableItem.slice(availableItem.length - 9, availableItem.length) : availableItem;
+    const latest = availableItem.length > 10 ? availableItem.slice(availableItem.length - 4, availableItem.length) : availableItem;
     /**
      * @link{https://www.learnrxjs.io/operators/combination/forkjoin.html}
      * Be aware that if any of the inner observables supplied to forkJoin error you will lose
@@ -55,22 +56,10 @@ export class HomeComponent implements OnInit {
      * if you do not catch the error correctly on the inner observable.
      * If you are only concerned with all inner observables completing successfully you can catch the error on the outside.
      */
-    of(latest).pipe(
-      mergeMap(items => forkJoin(
-        items.map(item => {
-          return from(this.ipfs.files.cat(item.hashId)).pipe(
-            map(val => JSON.parse(val.toString())),
-            tap(val => val.hashId = item.hashId)
-          );
-        })
-      ))
-    ).subscribe(values => {
-      // this.addParams(this.items);
-      this.ngZone.run(() => {
-        this.items = values.filter(val => val !== null);
-        this.changeDetectorRef.markForCheck();
-      });
+    this.ipfsService.getFiles(latest).forEach(value => {
+      console.log('====final===', value);
     });
+
   }
 
   viewDetail(hashId: any): void {

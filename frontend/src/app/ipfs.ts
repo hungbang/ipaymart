@@ -1,6 +1,7 @@
 /* tslint:disable */
 import { InjectionToken } from '@angular/core';
 import ipfs from 'ipfs';
+// var ipfsAPI = require('ipfs-api')
 
 export const IPFS = new InjectionToken(
   'The IPFS instance',

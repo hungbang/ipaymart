@@ -28,7 +28,7 @@ import {DeliveriesResolver} from './resolvers/DeliveriesResolver';
 import {IpfsService} from './services/ipfs.service';
 import { LoadingBarModule } from '@ngx-loading-bar/core';
 import { ToastrModule } from 'ngx-toastr';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { StorageServiceModule } from 'angular-webstorage-service';
 
 
 
@@ -60,7 +60,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     MatProgressBarModule,
     FileUploadModule,
     // BrowserAnimationsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    StorageServiceModule
   ],
   declarations: [
     // Components
@@ -92,6 +93,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     FileUploadModule,
     // BrowserAnimationsModule,
     ToastrModule,
+    StorageServiceModule,
     // Components
 
     // Directives
