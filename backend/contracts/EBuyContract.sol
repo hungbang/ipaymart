@@ -4,11 +4,11 @@ import "./strings.sol";
 
 contract EBuyContract {
 
-   using strings for *;
+  using strings for *;
 
-    function EBuyContract() {
+  function EBuyContract() {
 
-    }
+  }
 
   event NewItemEvent(string hashId, address seller);
   event NewOrderEvent(string hashId, address seller, address buyer);
@@ -84,9 +84,9 @@ contract EBuyContract {
   }
 
   function registerDelivery(string ipfsId) public {
-      require(deliveries[msg.sender].state == DeliveryState.None);
-      deliveries[msg.sender] = Delivery(DeliveryState.New, msg.sender, ipfsId);
-      deliveryAddresses.push(msg.sender);
+    require(deliveries[msg.sender].state == DeliveryState.None);
+    deliveries[msg.sender] = Delivery(DeliveryState.New, msg.sender, ipfsId);
+    deliveryAddresses.push(msg.sender);
   }
 
   function getDelivery(address _addr) public view returns(address, DeliveryState, string ipfsId) {
@@ -105,12 +105,12 @@ contract EBuyContract {
 
   function addItem(string _hashId, uint256 _price) public returns(bool) {
 
-     require(_price > 0);
-     require(items[_hashId].state == State.None);
-     itemIds.push(_hashId);
-     items[_hashId] = Item(State.Available, uint48(now), 0, _price, msg.sender, 0x0, _hashId);
-     sellItems[msg.sender].push(_hashId);
-     emit NewItemEvent(_hashId, msg.sender);
+    require(_price > 0);
+    require(items[_hashId].state == State.None);
+    itemIds.push(_hashId);
+    items[_hashId] = Item(State.Available, uint48(now), 0, _price, msg.sender, 0x0, _hashId);
+    sellItems[msg.sender].push(_hashId);
+    emit NewItemEvent(_hashId, msg.sender);
   }
 
 
@@ -132,15 +132,15 @@ contract EBuyContract {
 
 
   function sendItem(string _hashId, address _delivery) public onlySeller(_hashId) {
-      // check if item is in latest order
-      require(orders[_hashId].length > 0);
-      Order storage order = orders[_hashId][orders[_hashId].length - 1];
-      require(order.state == OrderState.Ordered);
-      order.delivery = _delivery;
-      order.deliveryTime = uint48(now);
-      order.state = OrderState.InDelivery;
-      carryingItems[_delivery].push(CarryingItem(order.id, _hashId));
-      emit ItemSentEvent(_hashId, items[_hashId].seller, _delivery);
+    // check if item is in latest order
+    require(orders[_hashId].length > 0);
+    Order storage order = orders[_hashId][orders[_hashId].length - 1];
+    require(order.state == OrderState.Ordered);
+    order.delivery = _delivery;
+    order.deliveryTime = uint48(now);
+    order.state = OrderState.InDelivery;
+    carryingItems[_delivery].push(CarryingItem(order.id, _hashId));
+    emit ItemSentEvent(_hashId, items[_hashId].seller, _delivery);
 
   }
 
@@ -162,20 +162,22 @@ contract EBuyContract {
     order.closedTime = uint48(now);
     items[_hashId].seller.transfer(items[_hashId].price);
     balances[msg.sender] -= items[_hashId].price;
+    items[_hashId].state = State.Sold;
+    items[_hashId].soldTime = uint48(now);
     emit ReceivedItemEvent(_hashId, items[_hashId].seller, msg.sender);
     return true;
   }
 
-//  function cancelOrder(string _hashId) public canCancel(_hashId) returns (bool) {
-//    Order storage order = orders[_hashId][orders[_hashId].length - 1];
-//    require(order.state != OrderState.Done && order.state != OrderState.Delivered && order.state != OrderState.Canceled);
-//    require( balances[msg.sender] > items[_hashId].price);
-//    order.state = OrderState.Canceled;
-//    items[_hashId].state = State.Available;
-//    msg.sender.transfer(items[_hashId].price);
-//    balances[msg.sender] -= items[_hashId].price;
-//    return true;
-//  }
+  //  function cancelOrder(string _hashId) public canCancel(_hashId) returns (bool) {
+  //    Order storage order = orders[_hashId][orders[_hashId].length - 1];
+  //    require(order.state != OrderState.Done && order.state != OrderState.Delivered && order.state != OrderState.Canceled);
+  //    require( balances[msg.sender] > items[_hashId].price);
+  //    order.state = OrderState.Canceled;
+  //    items[_hashId].state = State.Available;
+  //    msg.sender.transfer(items[_hashId].price);
+  //    balances[msg.sender] -= items[_hashId].price;
+  //    return true;
+  //  }
 
   function listItems() public view returns(string, uint256[], address[], address[],
     State[], uint48[], uint48[] ) {
@@ -210,17 +212,17 @@ contract EBuyContract {
       ids = ids.toSlice().concat("--LINE--".toSlice()).toSlice().concat(itemIds[i].toSlice());
     }
   }
-//
+  //
   function listCarryingItems(address deliveryAddress) public returns(string hashIds, uint[], OrderState[] ) {
-     uint[] memory orderIds = new uint[](carryingItems[deliveryAddress].length);
-     OrderState[] memory states = new OrderState[](orderIds.length);
+    uint[] memory orderIds = new uint[](carryingItems[deliveryAddress].length);
+    OrderState[] memory states = new OrderState[](orderIds.length);
 
-     for(uint i = 0; i < orderIds.length;i++) {
-       string hashId = carryingItems[deliveryAddress][i].hashId;
-         hashIds = hashIds.toSlice().concat("--LINE--".toSlice()).toSlice().concat(hashId.toSlice());
-         orderIds[i] =  carryingItems[deliveryAddress][i].orderId;
-         states[i] = orders[hashId][orderIds[i]].state;
-     }
+    for(uint i = 0; i < orderIds.length;i++) {
+      string hashId = carryingItems[deliveryAddress][i].hashId;
+      hashIds = hashIds.toSlice().concat("--LINE--".toSlice()).toSlice().concat(hashId.toSlice());
+      orderIds[i] =  carryingItems[deliveryAddress][i].orderId;
+      states[i] = orders[hashId][orderIds[i]].state;
+    }
     return (hashIds,orderIds, states);
   }
 
@@ -230,7 +232,7 @@ contract EBuyContract {
     string memory receiverInfo;
     string memory times;
     string memory states;
-//
+    //
     address[] memory buyers = new address[](itemOrders.length);
     address[] memory deliveries = new address[](itemOrders.length);
     for(uint i = 0;i < itemOrders.length; i++) {
@@ -278,4 +280,4 @@ contract EBuyContract {
     }
     return string(bstr);
   }
- }
+}
