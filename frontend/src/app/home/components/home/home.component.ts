@@ -8,7 +8,6 @@ import {map, mergeMap, tap} from 'rxjs/operators';
 import {ItemDetailComponent} from '../../../items/components/item-detail/item-detail.component';
 import {ScItem} from '../../../shared/model/sc-item';
 import {HandleError, HttpErrorHandler} from '../../../shared/services/http-error-handler';
-import {Objects} from '../../../shared/utils/objects-util';
 import {IPFS} from '../../../ipfs';
 
 @Component({
@@ -31,8 +30,7 @@ export class HomeComponent implements OnInit {
               private activatedRoute: ActivatedRoute,
               @Inject(IPFS) private ipfs,
               private route: Router,
-              private ngZone: NgZone,
-              private ipfsRestClient: IpfsRestClient) {
+              private ngZone: NgZone) {
     this.handleError = httpErrorHandler.createHandleError('IpfsRestClient');
 
   }
@@ -86,11 +84,4 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  addParams(items: Item[]): void {
-    const urlTree = this.route.createUrlTree([], {
-      queryParams: {q: Objects.toBase64(items)}
-    });
-
-    this.route.navigateByUrl(urlTree);
-  }
 }
